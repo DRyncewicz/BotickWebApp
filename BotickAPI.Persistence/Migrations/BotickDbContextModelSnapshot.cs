@@ -65,7 +65,7 @@ namespace BotickAPI.Persistence.Migrations
                     b.Property<double>("TotalPrice")
                         .HasColumnType("float");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("UserEmail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -164,7 +164,7 @@ namespace BotickAPI.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OrganizerId")
+                    b.Property<int>("OrganizerEmail")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartTime")
@@ -218,7 +218,7 @@ namespace BotickAPI.Persistence.Migrations
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("UserEmail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

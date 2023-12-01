@@ -9,7 +9,7 @@ namespace BotickAPI.Domain.Entities
 {
     public class Event :  AuditableEntity
     {
-        public int OrganizerId { get; set; }
+        public int OrganizerEmail { get; set; }
 
         public string Name { get; set; }
 

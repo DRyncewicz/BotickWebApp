@@ -14,6 +14,9 @@ namespace BotickAPI.Persistence.Context
     public class BotickDbContext : DbContext, IBotickDbContext
     {
         private readonly IDateTime _dateTime;
+
+        private readonly ICurrentUserService _UserService;
+
         public DbSet<Booking> Bookings { get; set; }
 
         public DbSet<BookingDetail> BookingDetails { get; set; }
@@ -24,9 +27,14 @@ namespace BotickAPI.Persistence.Context
 
         public DbSet<EventReview> EventReviews { get; set; }
 
-        public BotickDbContext(DbContextOptions<BotickDbContext> options, IDateTime dateTime) : base(options)
+        public BotickDbContext(DbContextOptions<BotickDbContext> options) : base(options)
+        {
+        }
+
+        public BotickDbContext(DbContextOptions<BotickDbContext> options, IDateTime dateTime, ICurrentUserService userService) : base(options)
         {
             _dateTime = dateTime;
+            _UserService = userService;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -41,19 +49,19 @@ namespace BotickAPI.Persistence.Context
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        entry.Entity.CreatedBy = string.Empty;
+                        entry.Entity.CreatedBy = _UserService.Email;
                         entry.Entity.Created = _dateTime.Now;
                         entry.Entity.StatusId = 1;
                         break;
                     case EntityState.Modified:
-                        entry.Entity.ModifiedBy = string.Empty;
+                        entry.Entity.ModifiedBy = _UserService.Email;
                         entry.Entity.Modified = _dateTime.Now;
                         break;
                     case EntityState.Deleted:
-                        entry.Entity.ModifiedBy = string.Empty;
+                        entry.Entity.ModifiedBy = _UserService.Email;
                         entry.Entity.Modified = _dateTime.Now;
                         entry.Entity.Inactivated = _dateTime.Now;
-                        entry.Entity.InactivatedBy = string.Empty;
+                        entry.Entity.InactivatedBy = _UserService.Email;
                         entry.Entity.StatusId = 0;
                         entry.State = EntityState.Modified;
                         break;

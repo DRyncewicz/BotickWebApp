@@ -28,7 +28,7 @@ namespace BotickAPI.Persistence.Context
             var optionsBuilder = new DbContextOptionsBuilder<BotickDbContext>();
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnectionString"));
 
-            return new BotickDbContext(optionsBuilder.Options, _dateTime);
+            return new BotickDbContext(optionsBuilder.Options);
         }
     }
 }

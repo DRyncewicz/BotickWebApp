@@ -9,7 +9,7 @@ namespace BotickAPI.Domain.Entities
 {
     public class Booking : AuditableEntity
     {
-        public string UserId { get; set; }
+        public string UserEmail { get; set; }
 
         public int EventId { get; set; }
 
