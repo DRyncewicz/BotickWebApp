@@ -1,12 +1,15 @@
 using BotickAPI.Application;
 using BotickAPI.Application.Common.Interfaces;
+using BotickAPI.Filters;
 using BotickAPI.Infrastructure;
 using BotickAPI.Persistence;
 using BotickAPI.Persistence.Context;
+using BotickAPI.Service;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,7 +22,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddScoped(typeof(ICurrentUserService), typeof(ICurrentUserService));
+builder.Services.AddScoped(typeof(ICurrentUserService), typeof(CurrentUserService));
 builder.Services.AddCors(options =>
     options.AddPolicy(name: "MyAllowSpecificOrigins",
         builder =>
@@ -45,6 +48,25 @@ builder.Services.AddAuthorization(options =>
 });
 builder.Services.AddSwaggerGen(c =>
 {
+    c.AddSecurityDefinition("bearer", new  OpenApiSecurityScheme()
+    {
+        Type = SecuritySchemeType.OAuth2,
+        Flows = new OpenApiOAuthFlows()
+        {
+            AuthorizationCode = new  OpenApiOAuthFlow
+            {
+                AuthorizationUrl = new Uri("https://localhost:5001/connect/authorize"),
+                TokenUrl = new Uri("https://localhost:5001/connect/token"),
+                Scopes = new Dictionary<string, string>
+                {
+                    {"api1", "Full access"},
+                    {"user", "User info"},
+                    {"openid", "user info"}
+                }
+            }
+        }
+    });
+    c.OperationFilter<AuthorizeCheckOperationFilter>();
     c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {
         Title = "BotickApi",
@@ -99,7 +121,15 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Botick v1");
+        c.OAuthClientId("swagger");
+        c.OAuthClientSecret("secret");
+        c.OAuthUsePkce();
+        c.OAuth2RedirectUrl("https://localhost:7086/swagger/oauth2-redirect.html");
+
+    });
 }
 app.MapHealthChecksUI();
 

@@ -40,7 +40,15 @@ internal static class HostingExtensions
             .AddProfileService<ProfileService>()
             .AddJwtBearerClientAuthentication();
 
-        builder.Services.AddAuthentication();
+        builder.Services.AddAuthentication()
+            .AddGoogle("Google", options =>
+        {
+            options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+
+            IConfigurationSection googleAuthNSection = builder.Configuration.GetSection("Authentication:Google");
+            options.ClientId = googleAuthNSection["ClientId"];
+            options.ClientSecret = googleAuthNSection["ClientSecret"];
+        }); 
 
         return builder.Build();
     }

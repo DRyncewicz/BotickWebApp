@@ -28,7 +28,7 @@ public static class Config
             new Client
             {
                 ClientId = "client",
-                ClientName = "Clientfor Postman user",
+                ClientName = "Client for Postman user",
                 AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
                 ClientSecrets = {new  Secret("secret".Sha256())},
                 AllowedScopes = {"api1",  "user"},
@@ -42,7 +42,7 @@ public static class Config
                 ClientName ="Client for Swagger user",
                 AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
                 ClientSecrets = {new Secret("secret".Sha256())},
-                AllowedScopes = {"api1", "user"},
+                AllowedScopes = {"api1", "user", "openid"},
                 AlwaysSendClientClaims = true,
                 AlwaysIncludeUserClaimsInIdToken = true,
                 AllowAccessTokensViaBrowser = true,
