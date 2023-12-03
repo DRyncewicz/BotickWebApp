@@ -27,7 +27,9 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: "MyAllowSpecificOrigins",
         builder =>
         {
-            builder.WithOrigins("https://localhost:5001");
+            builder.WithOrigins("https://localhost:7048", "https://localhost:5001")
+                .AllowAnyMethod()
+                .AllowAnyHeader();
         }));
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
@@ -147,7 +149,7 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
-app.UseCors();
+app.UseCors("MyAllowSpecificOrigins");
 
 app.UseAuthorization();
 

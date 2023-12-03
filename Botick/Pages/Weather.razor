@@ -1,11 +1,14 @@
 ﻿@page "/weather"
-@inject HttpClient Http
+@using Botick.Shared
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using System.Net
+@inject IHttpClientFactory HttpClientFactory
+@inject IAccessTokenProvider AccessTokenProvider
 
 <PageTitle>Weather</PageTitle>
 
 <h1>Weather</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
 
 @if (forecasts == null)
 {
@@ -38,20 +41,29 @@ else
 
 @code {
     private WeatherForecast[]? forecasts;
+    private string errorMessage = "";
+    private string displayedToken = "";
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
-    }
+        var tokenResult = await AccessTokenProvider.RequestAccessToken();
 
-    public class WeatherForecast
-    {
-        public DateOnly Date { get; set; }
+        if (tokenResult.TryGetToken(out var token))
+        {
 
-        public int TemperatureC { get; set; }
-
-        public string? Summary { get; set; }
-
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+            var httpClient = HttpClientFactory.CreateClient("ServerAPI");
+            try
+            {
+                forecasts = await httpClient.GetFromJsonAsync<WeatherForecast[]>("weatherforecast");
+            }
+            catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                errorMessage = "Unauthorized access. Please log in.";
+            }
+        }
+        else
+        {
+            errorMessage = "Token not available. Please log in.";
+        }
     }
 }

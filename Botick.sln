@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Botick.Client", "Botick\Botick.Client.csproj", "{C3DB994D-5958-4095-9119-94F77B19DB39}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Botick", "Botick\Botick.csproj", "{C3DB994D-5958-4095-9119-94F77B19DB39}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BotickAPI.Server", "BotickAPI\BotickAPI.Server.csproj", "{CE1CACE8-46F1-4C9C-982D-17AE7C723C8F}"
 EndProject
@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BotickAPI.Persistence", "Bo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BotickAPI.Infrastructure", "BotickAPI.Infrastructure\BotickAPI.Infrastructure.csproj", "{0B9BEEF5-5B90-42D0-8CB6-86A7FD908E6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Botick.Shared", "Botick.Shared\Botick.Shared.csproj", "{DACFF204-95C8-463F-8AAB-F439763F6A8B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Botick.Shared", "Botick.Shared\Botick.Shared.csproj", "{DACFF204-95C8-463F-8AAB-F439763F6A8B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

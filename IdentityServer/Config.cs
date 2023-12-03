@@ -48,6 +48,20 @@ public static class Config
                 AllowAccessTokensViaBrowser = true,
                 RedirectUris = { "https://localhost:7086/swagger/oauth2-redirect.html" },
                 AllowedCorsOrigins = { "https://localhost:7086" }
+            },
+            new Client
+            {
+            ClientId = "blazor_webassembly",
+            ClientName = "Blazor WebAssembly Client",
+            AllowedGrantTypes = GrantTypes.Code,
+            RequireClientSecret = false, 
+            RedirectUris = { "https://localhost:7048/authentication/login-callback" },
+            PostLogoutRedirectUris = { "https://localhost:7048/authentication/logout-callback" },
+            AllowedCorsOrigins = { "https://localhost:7048" },
+            AllowedScopes = {"user", "openid", "profile", "api1"},
+            RequirePkce = true,
+            AllowAccessTokensViaBrowser = true
             }
+
         };
 }
