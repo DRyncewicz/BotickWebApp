@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BotickAPI.Persistence.Context
 {
-    public class BotickDbContext : DbContext, IBotickDbContext
+    public class BotickDbContext : DbContext
     {
         private readonly IDateTime _dateTime;
 

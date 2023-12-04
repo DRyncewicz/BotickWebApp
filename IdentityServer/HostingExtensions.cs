@@ -4,6 +4,7 @@ using IdentityServer.Data;
 using IdentityServer.Models;
 using IdentityServer.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -17,6 +18,13 @@ internal static class HostingExtensions
 
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));
+        builder.Services.Configure<IdentityOptions>(options =>
+        {
+            options.Password.RequireDigit = true;
+            options.Password.RequiredLength = 8;
+            options.SignIn.RequireConfirmedAccount = false;
+        });
+        builder.Services.AddTransient<IEmailSender, LogEmailSender>();
 
         builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -48,15 +56,15 @@ internal static class HostingExtensions
             IConfigurationSection googleAuthNSection = builder.Configuration.GetSection("Authentication:Google");
             options.ClientId = googleAuthNSection["ClientId"];
             options.ClientSecret = googleAuthNSection["ClientSecret"];
-        }); 
+        });
 
         return builder.Build();
     }
-    
+
     public static WebApplication ConfigurePipeline(this WebApplication app)
-    { 
+    {
         app.UseSerilogRequestLogging();
-    
+
         if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
