@@ -7,7 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using BotickAPI.Application.Common.Interfaces;
 using BotickAPI.Persistence.Context;
+using BotickAPI.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
+using System.Data;
+using Dapper;
 
 namespace BotickAPI.Persistence
 {
@@ -18,7 +22,9 @@ namespace BotickAPI.Persistence
             var connectionString = configuration.GetConnectionString("DefaultConnectionString") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             services.AddDbContext<BotickDbContext>(options =>
                 options.UseSqlServer(connectionString));
-            services.AddScoped<IBotickDbContext, BotickDbContext>();
+            services.AddScoped<IDbConnection>(db => new SqlConnection(configuration.GetConnectionString("DefaultConnectionString")));
+            services.AddScoped(typeof(IBaseCommandRepository<>), typeof(BaseCommandRepository<>));
+            services.AddScoped(typeof(IBaseQueryRepository<>), typeof(BaseQueryRepository<>));
             return services;
         }
     }
