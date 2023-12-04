@@ -1,15 +1,19 @@
-﻿using IdentityServer;
+using IdentityServer;
 using Serilog;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using IdentityServer.Data;
+using IdentityServer.Models;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateBootstrapLogger();
 
 Log.Information("Starting up");
+var builder = WebApplication.CreateBuilder(args);
 
 try
 {
-    var builder = WebApplication.CreateBuilder(args);
 
     builder.Host.UseSerilog((ctx, lc) => lc
         .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}")
@@ -46,4 +50,10 @@ finally
 {
     Log.Information("Shut down complete");
     Log.CloseAndFlush();
-}
+}var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContextConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(connectionString));
+
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ApplicationDbContext>();
