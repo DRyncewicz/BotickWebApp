@@ -27,6 +27,10 @@ namespace BotickAPI.Persistence.Context
 
         public DbSet<EventReview> EventReviews { get; set; }
 
+        public DbSet<Artist> Artists { get; set; }
+
+        public DbSet<Location> Locations { get; set; }
+
         public BotickDbContext(DbContextOptions<BotickDbContext> options) : base(options)
         {
         }
