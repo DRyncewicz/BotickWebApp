@@ -4,6 +4,7 @@ using BotickAPI.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BotickAPI.Persistence.Migrations
 {
     [DbContext(typeof(BotickDbContext))]
-    partial class BotickDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231205193517_ChangeRelationForLocationEventFromOneToManyToManyToMany")]
+    partial class ChangeRelationForLocationEventFromOneToManyToManyToMany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -339,6 +342,9 @@ namespace BotickAPI.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("EventId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("Inactivated")
                         .HasColumnType("datetime2");
 
@@ -360,22 +366,9 @@ namespace BotickAPI.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EventId");
+
                     b.ToTable("Locations");
-                });
-
-            modelBuilder.Entity("BotickAPI.Domain.Entities.LocationEvent", b =>
-                {
-                    b.Property<int>("EventId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LocationId")
-                        .HasColumnType("int");
-
-                    b.HasKey("EventId", "LocationId");
-
-                    b.HasIndex("LocationId");
-
-                    b.ToTable("LocationEvent");
                 });
 
             modelBuilder.Entity("BotickAPI.Domain.Entities.Ticket", b =>
@@ -478,23 +471,11 @@ namespace BotickAPI.Persistence.Migrations
                     b.Navigation("Event");
                 });
 
-            modelBuilder.Entity("BotickAPI.Domain.Entities.LocationEvent", b =>
+            modelBuilder.Entity("BotickAPI.Domain.Entities.Location", b =>
                 {
-                    b.HasOne("BotickAPI.Domain.Entities.Event", "Event")
-                        .WithMany("LocationEvents")
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BotickAPI.Domain.Entities.Location", "Location")
-                        .WithMany("LocationEvents")
-                        .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Event");
-
-                    b.Navigation("Location");
+                    b.HasOne("BotickAPI.Domain.Entities.Event", null)
+                        .WithMany("Locations")
+                        .HasForeignKey("EventId");
                 });
 
             modelBuilder.Entity("BotickAPI.Domain.Entities.Ticket", b =>
@@ -519,16 +500,11 @@ namespace BotickAPI.Persistence.Migrations
 
             modelBuilder.Entity("BotickAPI.Domain.Entities.Event", b =>
                 {
-                    b.Navigation("LocationEvents");
+                    b.Navigation("Locations");
 
                     b.Navigation("Reviews");
 
                     b.Navigation("Ticket");
-                });
-
-            modelBuilder.Entity("BotickAPI.Domain.Entities.Location", b =>
-                {
-                    b.Navigation("LocationEvents");
                 });
 
             modelBuilder.Entity("BotickAPI.Domain.Entities.Ticket", b =>
