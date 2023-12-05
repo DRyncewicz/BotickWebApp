@@ -31,6 +31,8 @@ namespace BotickAPI.Persistence.Context
 
         public DbSet<Location> Locations { get; set; }
 
+        public DbSet<LocationEvent> LocationEvent { get; set; }
+
         public BotickDbContext(DbContextOptions<BotickDbContext> options) : base(options)
         {
         }
@@ -44,6 +46,19 @@ namespace BotickAPI.Persistence.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            modelBuilder.Entity<LocationEvent>()
+                .HasKey(sc => new { sc.EventId, sc.LocationId });
+
+            modelBuilder.Entity<LocationEvent>()
+                .HasOne(sc => sc.Location)
+                .WithMany(s => s.LocationEvents)
+                .HasForeignKey(sc => sc.LocationId);
+
+            modelBuilder.Entity<LocationEvent>()
+                .HasOne(sc => sc.Event)
+                .WithMany(c => c.LocationEvents)
+                .HasForeignKey(sc => sc.EventId);
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())

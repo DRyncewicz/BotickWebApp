@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Botick.Shared.ViewModels.Event.Commands.CreateEvent
 {
-    public class LocationForNewEvent
+    public class LocationForCreateNewEventVm
     {
         public int Id { get; set; }
 

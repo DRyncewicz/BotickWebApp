@@ -11,17 +11,17 @@ using Dapper;
 
 namespace BotickAPI.Persistence.Repositories
 {
-    public class BaseQueryRepository<T>(IDbConnection dbConnection, string tableName) : IBaseQueryRepository<T> where T : class
+    public class BaseQueryRepository<T>(IDbConnection dbConnection) : IBaseQueryRepository<T> where T : class
     {
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            var query = $"SELECT * FROM {tableName}";
+            var query = $"SELECT * FROM {typeof(T).Name}s";
             return await dbConnection.QueryAsync<T>(query);
         }
 
         public async Task<T> GetByIdAsync(int id)
         {
-            var query = $"SELECT * FROM {tableName} WHERE Id = @Id";
+            var query = $"SELECT * FROM {typeof(T).Name}s WHERE Id = @Id";
             try
             {
                 return await dbConnection.QuerySingleOrDefaultAsync<T>(query, new { Id = id });

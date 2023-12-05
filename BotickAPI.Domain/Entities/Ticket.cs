@@ -13,6 +13,8 @@ namespace BotickAPI.Domain.Entities
 
         public double Price { get; set; }
 
+        public int Quantity { get; set; }
+
         public string TicketType { get; set; }
 
         public Event Event { get; set; }

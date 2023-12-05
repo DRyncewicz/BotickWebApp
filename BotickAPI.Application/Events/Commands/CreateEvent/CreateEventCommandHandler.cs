@@ -9,16 +9,18 @@ using BotickAPI.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace BotickAPI.Application.Events.Commands
+namespace BotickAPI.Application.Events.Commands.CreateEvent
 {
     public class CreateEventCommandHandler(IBaseCommandRepository<Event> eventRepository,
         IMapper mapper,
-        IFileSaver fileSaver) :  IRequestHandler<CreateEventCommand, int>
+        IFileSaver fileSaver,
+        ICurrentUserService currentUserService) : IRequestHandler<CreateEventCommand, int>
     {
         public async Task<int> Handle(CreateEventCommand request, CancellationToken cancellationToken)
         {
             var eventEntity = mapper.Map<Event>(request.CreateEventVm);
             eventEntity.Status = "Inactive - Waiting for tickets";
+            eventEntity.OrganizerEmail = currentUserService.Email;
 
             try
             {

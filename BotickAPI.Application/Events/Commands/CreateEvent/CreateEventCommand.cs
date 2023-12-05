@@ -9,7 +9,7 @@ using BotickAPI.Application.Common.Mappings;
 using BotickAPI.Domain.Entities;
 using MediatR;
 
-namespace BotickAPI.Application.Events.Commands
+namespace BotickAPI.Application.Events.Commands.CreateEvent
 {
     public class CreateEventCommand : IRequest<int>, IMapFrom<Event>
     {
@@ -19,11 +19,12 @@ namespace BotickAPI.Application.Events.Commands
         {
 
             profile.CreateMap<CreateEventVm, Event>()
-                .ForMember(dest => dest.Locations, opt => opt.MapFrom(src => src.Locations))
+                .ForMember(dest => dest.LocationEvents, opt => opt.MapFrom(src =>
+                    src.Locations.Select(loc => new LocationEvent { LocationId = loc.Id })))
                 .ForMember(dest => dest.Artists, opt => opt.MapFrom(src => src.Artists));
 
-            profile.CreateMap<LocationForNewEvent, Location>();
-            profile.CreateMap<ArtistForNewEvent, Artist>();
+            profile.CreateMap<LocationForCreateNewEventVm, Location>();
+            profile.CreateMap<ArtistForCreateNewEventVm, Artist>();
         }
     }
 }

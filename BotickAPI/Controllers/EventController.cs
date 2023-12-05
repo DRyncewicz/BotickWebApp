@@ -1,4 +1,4 @@
-﻿using BotickAPI.Application.Events.Commands;
+﻿using BotickAPI.Application.Events.Commands.CreateEvent;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +12,7 @@ namespace BotickAPI.Server.Controllers
     [Authorize]
     public class EventController : BaseController
     {
+        [Authorize(Roles = "Organiser")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]

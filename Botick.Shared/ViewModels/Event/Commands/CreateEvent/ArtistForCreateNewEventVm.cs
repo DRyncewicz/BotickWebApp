@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BotickAPI.Domain.Common;
 
-namespace BotickAPI.Domain.Entities
+namespace Botick.Shared.ViewModels.Event.Commands.CreateEvent
 {
-    public class Artist : AuditableEntity
+    public class ArtistForCreateNewEventVm
     {
+        public int Id { get; set; }
+
         public string Name { get; set; }
 
         public string Surname { get; set; }
@@ -19,14 +20,8 @@ namespace BotickAPI.Domain.Entities
 
         public string? BirthCity { get; set; }
 
-        public string Discipline { get; set;}
+        public string Discipline { get; set; }
 
         public string Description { get; set; }
-
-        public int Likes { get; set; } = 0;
-
-        public ICollection<Ticket> Tickets { get; set; }
-
-        public ICollection<Event> Events {get; set; }
     }
 }

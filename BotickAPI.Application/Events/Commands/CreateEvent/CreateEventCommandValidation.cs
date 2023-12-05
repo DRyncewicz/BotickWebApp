@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using BotickAPI.Application.Common.Interfaces;
 using FluentValidation;
 
-namespace BotickAPI.Application.Events.Commands
+namespace BotickAPI.Application.Events.Commands.CreateEvent
 {
     public class CreateEventCommandValidation : AbstractValidator<CreateEventCommand>
     {
@@ -14,9 +14,6 @@ namespace BotickAPI.Application.Events.Commands
         {
             RuleFor(p => p.CreateEventVm.Name).NotEmpty()
                 .WithMessage("Name for event is required.");
-            RuleFor(p => p.CreateEventVm.OrganizerEmail).NotEmpty()
-                .WithMessage("Email is required.")
-                .EmailAddress().WithMessage("Invalid email address.");
             RuleFor(p => p.CreateEventVm.StartTime).GreaterThan(dateTime.Now.AddDays(14))
                 .WithMessage("Event should be planned at least two weeks in advance");
             RuleFor(p => p.CreateEventVm.Description).NotEmpty().WithMessage("Description is required")

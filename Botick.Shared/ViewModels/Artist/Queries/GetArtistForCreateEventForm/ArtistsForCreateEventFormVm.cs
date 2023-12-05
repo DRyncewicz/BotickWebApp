@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Botick.Shared.ViewModels.Event.Commands.CreateEvent
+namespace Botick.Shared.ViewModels.Artist.Queries.GetArtistForCreateEventForm
 {
-    public class ArtistForNewEvent
+    public class ArtistsForCreateEventFormVm
     {
         public int Id { get; set; }
 
@@ -14,14 +14,6 @@ namespace Botick.Shared.ViewModels.Event.Commands.CreateEvent
 
         public string Surname { get; set; }
 
-        public int? Age { get; set; }
-
         public string ArtName { get; set; }
-
-        public string? BirthCity { get; set; }
-
-        public string Discipline { get; set; }
-
-        public string Description { get; set; }
     }
 }

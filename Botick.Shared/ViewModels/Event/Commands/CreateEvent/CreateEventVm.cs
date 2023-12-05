@@ -9,8 +9,6 @@ namespace Botick.Shared.ViewModels.Event.Commands.CreateEvent
 {
     public class CreateEventVm
     {
-        public string OrganizerEmail { get; set; }
-
         public string Name { get; set; }
 
         public string EventType { get; set; }
@@ -23,8 +21,8 @@ namespace Botick.Shared.ViewModels.Event.Commands.CreateEvent
 
         public byte[] Image { get; set; }
 
-        public List<LocationForNewEvent> Locations { get; set; } = new List<LocationForNewEvent>();
+        public List<LocationForCreateNewEventVm> Locations { get; set; } = new List<LocationForCreateNewEventVm>();
 
-        public List<ArtistForNewEvent> Artists { get; set; } = new List<ArtistForNewEvent>();
+        public List<ArtistForCreateNewEventVm> Artists { get; set; } = new List<ArtistForCreateNewEventVm>();
     }
 }
