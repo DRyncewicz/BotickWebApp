@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BotickAPI.Application.Locations.Queries.GetLocationsForCreateEventForm
 {
-    public class GetLocationsForCreateEventFormQuery : IRequest<List<LocationsForCreateEventFormVm>>
+    public class GetLocationCreateEventFormQuery : IRequest<List<LocationCreateEventFormVm>>
     {
         public string SearchString { get; set; }
     }

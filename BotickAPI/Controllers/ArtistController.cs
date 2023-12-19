@@ -1,4 +1,4 @@
-﻿
+﻿using Botick.Shared.ViewModels.Artist.Queries.GetArtistForCreateEventForm;
 using BotickAPI.Application.Artists.Queries.GetArtistsForCreateEventForm;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -17,10 +17,10 @@ namespace BotickAPI.Server.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<List<ArtistsForCreateEventFormVm>>> GetBySearchString(string searchString)
+        public async Task<ActionResult<List<ArtistCreateEventFormVm>>> GetBySearchString(string searchString)
         {
-            var vm = await Mediator.Send(new GetArtistsForCreateEventFormQuery() { SearchString = searchString });
-            return vm;
+            var vm = await Mediator.Send(new GetArtistCreateEventFormQuery() { SearchString = searchString });
+            return vm.ArtistsVm;
         }
     }
 }

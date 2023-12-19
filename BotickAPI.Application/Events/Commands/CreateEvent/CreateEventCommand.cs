@@ -25,9 +25,9 @@ namespace BotickAPI.Application.Events.Commands.CreateEvent
 
         public byte[] Image { get; set; }
 
-        public List<LocationForCreateNewEventVm> Locations { get; set; } = new List<LocationForCreateNewEventVm>();
+        public List<CreateEventLocationVm> Locations { get; set; } = new List<CreateEventLocationVm>();
 
-        public List<ArtistForCreateNewEventVm> Artists { get; set; } = new List<ArtistForCreateNewEventVm>();
+        public List<CreateEventArtistVm> Artists { get; set; } = new List<CreateEventArtistVm>();
 
         public void Mapping(Profile profile)
         {
@@ -37,8 +37,8 @@ namespace BotickAPI.Application.Events.Commands.CreateEvent
                     src.Locations.Select(loc => new LocationEvent { LocationId = loc.Id })))
                 .ForMember(dest => dest.Artists, opt => opt.MapFrom(src => src.Artists));
 
-            profile.CreateMap<LocationForCreateNewEventVm, Location>();
-            profile.CreateMap<ArtistForCreateNewEventVm, Artist>();
+            profile.CreateMap<CreateEventLocationVm, Location>();
+            profile.CreateMap<CreateEventArtistVm, Artist>();
         }
     }
 }

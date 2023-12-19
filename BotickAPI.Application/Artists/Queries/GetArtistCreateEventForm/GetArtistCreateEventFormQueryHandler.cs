@@ -13,9 +13,9 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace BotickAPI.Application.Artists.Queries.GetArtistsForCreateEventForm
 {
-    internal class GetArtistsForCreateEventFormQueryHandler(ISqlConnectionFactory sqlConnectionFactory, IMapper mapper) : IRequestHandler<GetArtistsForCreateEventFormQuery, List<ArtistsForCreateEventFormVm>>
+    internal class GetArtistCreateEventFormQueryHandler(ISqlConnectionFactory sqlConnectionFactory, IMapper mapper) : IRequestHandler<GetArtistCreateEventFormQuery, List<ArtistCreateEventFormVm>>
     {
-        public async Task<List<ArtistsForCreateEventFormVm>> Handle(GetArtistsForCreateEventFormQuery request, CancellationToken cancellationToken)
+        public async Task<List<ArtistCreateEventFormVm>> Handle(GetArtistCreateEventFormQuery request, CancellationToken cancellationToken)
         {
             await using SqlConnection connection = sqlConnectionFactory.CreateConnection();
             var searchString = request.SearchString ?? string.Empty;
@@ -27,7 +27,7 @@ namespace BotickAPI.Application.Artists.Queries.GetArtistsForCreateEventForm
 
             var artists = await connection.QueryAsync<Artist>(query, new { SearchString = searchString });
 
-            return mapper.Map<List<ArtistsForCreateEventFormVm>>(artists);
+            return mapper.Map<List<ArtistCreateEventFormVm>>(artists);
         }
     }
 }

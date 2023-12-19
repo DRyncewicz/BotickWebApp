@@ -13,9 +13,9 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace BotickAPI.Application.Locations.Queries.GetLocationsForCreateEventForm
 {
-    internal class GetLocationsForCreateEventFormQueryHandler(ISqlConnectionFactory sqlConnectionFactory, IMapper mapper) : IRequestHandler<GetLocationsForCreateEventFormQuery, List<LocationsForCreateEventFormVm>>
+    internal class GetLocationCreateEventFormQueryHandler(ISqlConnectionFactory sqlConnectionFactory, IMapper mapper) : IRequestHandler<GetLocationCreateEventFormQuery, List<LocationCreateEventFormVm>>
     {
-        public async Task<List<LocationsForCreateEventFormVm>> Handle(GetLocationsForCreateEventFormQuery request, CancellationToken cancellationToken)
+        public async Task<List<LocationCreateEventFormVm>> Handle(GetLocationCreateEventFormQuery request, CancellationToken cancellationToken)
         {
             await using SqlConnection connection = sqlConnectionFactory.CreateConnection();
             var searchString = request.SearchString ?? string.Empty;
@@ -26,7 +26,7 @@ namespace BotickAPI.Application.Locations.Queries.GetLocationsForCreateEventForm
             var locations = await connection.QueryAsync<Location>(query, new { SearchString = searchString });
 
 
-            return mapper.Map<List<LocationsForCreateEventFormVm>>(locations);  
+            return mapper.Map<List<LocationCreateEventFormVm>>(locations);  
         }
     }
 }

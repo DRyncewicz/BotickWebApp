@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BotickAPI.Application.Locations.Queries.GetLocationsForCreateEventForm
 {
-    public class LocationsForCreateEventFormVm : IMapFrom<Location>
+    public class LocationCreateEventFormVm : IMapFrom<Location>
     {
         public int Id { get; set; }
 
@@ -19,7 +19,7 @@ namespace BotickAPI.Application.Locations.Queries.GetLocationsForCreateEventForm
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Location, LocationsForCreateEventFormVm>();
+            profile.CreateMap<Location, LocationCreateEventFormVm>();
         }
     }
 }

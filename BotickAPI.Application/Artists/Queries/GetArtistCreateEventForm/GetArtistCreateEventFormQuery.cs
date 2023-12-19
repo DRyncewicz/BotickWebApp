@@ -7,7 +7,7 @@ using MediatR;
 
 namespace BotickAPI.Application.Artists.Queries.GetArtistsForCreateEventForm
 {
-    public class GetArtistsForCreateEventFormQuery : IRequest<List<ArtistsForCreateEventFormVm>>
+    public class GetArtistCreateEventFormQuery : IRequest<List<ArtistCreateEventFormVm>>
     {
         public string SearchString { get; set; }
     }

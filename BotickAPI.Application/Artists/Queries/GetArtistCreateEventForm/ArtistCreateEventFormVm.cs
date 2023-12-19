@@ -9,7 +9,7 @@ using BotickAPI.Domain.Entities;
 
 namespace BotickAPI.Application.Artists.Queries.GetArtistsForCreateEventForm
 {
-    public class ArtistsForCreateEventFormVm : IMapFrom<Artist>
+    public class ArtistCreateEventFormVm : IMapFrom<Artist>
     {
         public int Id { get; set; }
 
@@ -21,7 +21,7 @@ namespace BotickAPI.Application.Artists.Queries.GetArtistsForCreateEventForm
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Artist, ArtistsForCreateEventFormVm>();
+            profile.CreateMap<Artist, ArtistCreateEventFormVm>();
         }
     }
 }
