@@ -17,12 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Botick.Shared\Botick.Shared.csproj" />
     <ProjectReference Include="..\BotickAPI.Domain\BotickAPI.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Events\Queries\" />
   </ItemGroup>
 
 </Project>

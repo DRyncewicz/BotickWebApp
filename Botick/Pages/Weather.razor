@@ -1,5 +1,4 @@
 ﻿@page "/weather"
-@using Botick.Shared
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using System.Net
 @inject IHttpClientFactory HttpClientFactory
@@ -10,11 +9,8 @@
 <h1>Weather</h1>
 
 
-@if (forecasts == null)
-{
     <p><em>Loading...</em></p>
-}
-else
+
 {
     <table class="table">
         <thead>
@@ -26,21 +22,16 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
+            
+
+    
+            
         </tbody>
     </table>
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
+    //private WeatherForecast[]? forecasts;
     private string errorMessage = "";
     private string displayedToken = "";
 
@@ -54,7 +45,7 @@ else
             var httpClient = HttpClientFactory.CreateClient("ServerAPI");
             try
             {
-                forecasts = await httpClient.GetFromJsonAsync<WeatherForecast[]>("weatherforecast");
+                //forecasts = await httpClient.GetFromJsonAsync<WeatherForecast[]>("weatherforecast");
             }
             catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.Unauthorized)
             {

@@ -18,14 +18,14 @@ namespace BotickAPI.Application.Events.Commands.CreateEvent
     {
         public async Task<int> Handle(CreateEventCommand request, CancellationToken cancellationToken)
         {
-            var eventEntity = mapper.Map<Event>(request.CreateEventVm);
+            var eventEntity = mapper.Map<Event>(request);
             eventEntity.Status = "Inactive - Waiting for tickets";
             eventEntity.OrganizerEmail = currentUserService.Email;
 
             try
             {
-                eventEntity.ImagePath = fileSaver.SaveImageFile(request.CreateEventVm.Image,
-                    request.CreateEventVm.Name);
+                eventEntity.ImagePath = fileSaver.SaveImageFile(request.Image,
+                    request.Name);
             }
             catch
             {

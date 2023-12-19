@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Botick.Shared.ViewModels.Event.Queries.GetEventsForBoard
+namespace BotickAPI.Application.Events.Queries.GetEventListForBoard
 {
     public class EventForListVm
     {
