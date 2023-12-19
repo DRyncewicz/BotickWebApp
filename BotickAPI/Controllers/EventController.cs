@@ -24,7 +24,7 @@ namespace BotickAPI.Server.Controllers
                 using (var stream = new System.IO.MemoryStream())
                 {
                     await file.CopyToAsync(stream);
-                    command.CreateEventVm.Image = stream.ToArray();
+                    command.Image = stream.ToArray();
                 }
             }
 

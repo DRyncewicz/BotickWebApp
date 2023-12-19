@@ -1,5 +1,4 @@
-﻿using Botick.Shared.ViewModels.Artist.Queries.GetArtistForCreateEventForm;
-using Botick.Shared.ViewModels.Location.Queries.GetLocationForCreateEventForm;
+﻿
 using BotickAPI.Application.Artists.Queries.GetArtistsForCreateEventForm;
 using BotickAPI.Application.Locations.Queries.GetLocationsForCreateEventForm;
 using Microsoft.AspNetCore.Authorization;
@@ -22,7 +21,7 @@ namespace BotickAPI.Server.Controllers
         public async Task<ActionResult<List<LocationsForCreateEventFormVm>>> GetBySearchString(string searchString)
         {
             var vm = await Mediator.Send(new GetLocationsForCreateEventFormQuery() { SearchString = searchString });
-            return vm.LocationsVm;
+            return vm;
         }
     }
 }

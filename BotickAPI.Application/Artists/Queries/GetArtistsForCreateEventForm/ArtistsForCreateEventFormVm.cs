@@ -4,15 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using Botick.Shared.ViewModels.Artist.Queries.GetArtistForCreateEventForm;
 using BotickAPI.Application.Common.Mappings;
 using BotickAPI.Domain.Entities;
 
 namespace BotickAPI.Application.Artists.Queries.GetArtistsForCreateEventForm
 {
-    public class ArtistsForCreateEventFormDto : IMapFrom<Artist>
+    public class ArtistsForCreateEventFormVm : IMapFrom<Artist>
     {
-        public List<ArtistsForCreateEventFormVm> ArtistsVm { get; set; }
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string Surname { get; set; }
+
+        public string ArtName { get; set; }
 
         public void Mapping(Profile profile)
         {

@@ -1,15 +1,14 @@
-﻿using System;
+﻿using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Botick.Shared.ViewModels.Event.Queries.GetEventsForBoard
+namespace BotickAPI.Application.Events.Queries.GetEventListForBoard
 {
-    public class ListEventForListVm
+    public class GetEventListBoardQuery : IRequest<List<EventForListVm>>
     {
-        public List<EventForListVm> Events { get; set; } = new List<EventForListVm>();
-
         public int PageSize { get; set; }
 
         public int CurrentPage { get; set; }

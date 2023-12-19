@@ -12,17 +12,17 @@ namespace BotickAPI.Application.Events.Commands.CreateEvent
     {
         public CreateEventCommandValidation(IDateTime dateTime)
         {
-            RuleFor(p => p.CreateEventVm.Name).NotEmpty()
+            RuleFor(p => p.Name).NotEmpty()
                 .WithMessage("Name for event is required.");
-            RuleFor(p => p.CreateEventVm.StartTime).GreaterThan(dateTime.Now.AddDays(14))
+            RuleFor(p => p.StartTime).GreaterThan(dateTime.Now.AddDays(14))
                 .WithMessage("Event should be planned at least two weeks in advance");
-            RuleFor(p => p.CreateEventVm.Description).NotEmpty().WithMessage("Description is required")
+            RuleFor(p => p.Description).NotEmpty().WithMessage("Description is required")
                 .MinimumLength(100).WithMessage("Minimum length of description is 100 letters");
-            RuleFor(p => p.CreateEventVm.EventType).NotEmpty()
+            RuleFor(p => p.EventType).NotEmpty()
                 .WithMessage("Event type is required.");
-            RuleFor(p => p.CreateEventVm.EndTime).GreaterThan(p => p.CreateEventVm.StartTime)
+            RuleFor(p => p.EndTime).GreaterThan(p => p.StartTime)
                 .WithMessage("The event should end after the start, this field is not required");
-            RuleFor(p => p.CreateEventVm.Image).NotNull().NotEmpty()
+            RuleFor(p => p.Image).NotNull().NotEmpty()
                 .WithMessage("Image is required");
         }
     }
