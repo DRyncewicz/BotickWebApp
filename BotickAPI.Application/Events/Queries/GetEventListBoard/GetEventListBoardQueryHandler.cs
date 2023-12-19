@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BotickAPI.Application.Events.Queries.GetEventListForBoard
 {
-    internal class GetEventListBoardQueryHandler
+    public class GetEventListBoardQueryHandler
     {
     }
 }

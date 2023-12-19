@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace BotickAPI.Application.Common.Interfaces
 {
-    public interface IBaseQueryRepository<T> where T : class
+    public interface ISqlConnectionFactory
     {
-        Task<IEnumerable<T>> GetAllAsync();
-
-        Task<T> GetByIdAsync(int id);
+        SqlConnection CreateConnection();
     }
 }
