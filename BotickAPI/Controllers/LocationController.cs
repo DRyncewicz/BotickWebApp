@@ -13,14 +13,14 @@ namespace BotickAPI.Server.Controllers
     public class LocationController : BaseController
     {
         [Authorize]
-        [HttpGet("{searchString}")]
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<List<LocationsForCreateEventFormVm>>> GetBySearchString(string searchString)
+        public async Task<ActionResult<List<LocationCreateEventFormVm>>> GetAll()
         {
-            var vm = await Mediator.Send(new GetLocationsForCreateEventFormQuery() { SearchString = searchString });
+            var vm = await Mediator.Send(new GetLocationCreateEventFormQuery());
             return vm;
         }
     }

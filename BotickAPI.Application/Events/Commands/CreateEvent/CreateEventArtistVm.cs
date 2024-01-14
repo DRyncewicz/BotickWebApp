@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Botick.Shared.ViewModels.Event.Commands.CreateEvent
 {
-    public class ArtistForCreateNewEventVm
+    public class CreateEventArtistVm
     {
         public int Id { get; set; }
 
@@ -14,14 +14,6 @@ namespace Botick.Shared.ViewModels.Event.Commands.CreateEvent
 
         public string Surname { get; set; }
 
-        public int? Age { get; set; }
-
         public string ArtName { get; set; }
-
-        public string? BirthCity { get; set; }
-
-        public string Discipline { get; set; }
-
-        public string Description { get; set; }
     }
 }

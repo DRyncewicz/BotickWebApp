@@ -1,0 +1,31 @@
+﻿@page "/events-add"
+@using Botick.Models.Commands.Events.CreateEvent
+@using Botick.Models.Queries.Artists
+@using Botick.Models.Queries.Locations
+
+
+@inject IHttpClientFactory httpClientFactory
+
+<EditForm Model="@createEventVm">
+    <InputText @bind-Value="createEventVm.Name" />
+    <InputText @bind-Value="createEventVm.EventType" />
+    <InputTextArea @bind-Value="createEventVm.Description" />
+    <InputDate @bind-Value="createEventVm.StartTime" />
+    <InputDate @bind-Value="createEventVm.EndTime" />
+
+    <button type="submit">Send</button>
+</EditForm>
+
+@code {
+    private HttpClient serverApiClient;
+    private CreateEventVm createEventVm = new CreateEventVm();
+    private LocationCreateEventFormVm locationCreateEventFormVm = new LocationCreateEventFormVm();
+    private ArtistCreateEventFormVm artistCreateEventFormVm = new ArtistCreateEventFormVm();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var serverApiClient = httpClientFactory.CreateClient("ServerAPI");
+        var locationsResponse = await serverApiClient.GetAsync("/api/locations");
+        var artistsResponse = await serverApiClient.GetAsync("/api/artists");
+    }
+}

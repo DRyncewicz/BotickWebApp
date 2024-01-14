@@ -24,14 +24,29 @@
         </div>
 
         <div class="content px-4">
-            @Body
+            <ErrorBoundary>
+                <ChildContent>
+                    @Body
+                </ChildContent>
+                <ErrorContent>
+                    <p>Sorry there is nothing here to see!</p>
+                </ErrorContent>
+            </ErrorBoundary>
+
         </div>
     </div>
 </div>
 @code {
+    private ErrorBoundary? errorBoundary;
+
     public async Task Logout()
     {
         await SignOutManager.SetSignOutState();
         nav.NavigateTo("authentication/logout");
+    }
+
+    protected override void OnParametersSet()
+    {
+        errorBoundary?.Recover();
     }
 }
