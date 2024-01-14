@@ -9,19 +9,12 @@ using System.Threading.Tasks;
 
 namespace BotickAPI.Persistence.Context
 {
-    internal sealed class SqlConnectionFactory : ISqlConnectionFactory
+    internal sealed class SqlConnectionFactory(IConfiguration configuration) : ISqlConnectionFactory
     {
-        private readonly IConfiguration _configuration;
-
-        public SqlConnectionFactory(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
         public SqlConnection CreateConnection()
         {
             return new SqlConnection(
-                _configuration.GetConnectionString("DefaultConnectionString"));
+                configuration.GetConnectionString("DefaultConnectionString"));
         }
     }
 }

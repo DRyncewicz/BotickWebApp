@@ -18,12 +18,9 @@ namespace BotickAPI.Application.Locations.Queries.GetLocationsForCreateEventForm
         public async Task<List<LocationCreateEventFormVm>> Handle(GetLocationCreateEventFormQuery request, CancellationToken cancellationToken)
         {
             await using SqlConnection connection = sqlConnectionFactory.CreateConnection();
-            var searchString = request.SearchString ?? string.Empty;
-            var query = @"
-                        SELECT * FROM Locations 
-                        WHERE (@SearchString = '' OR City LIKE '%' + @SearchString + '%' 
-                        OR Venue LIKE '%' + @SearchString + '%')";
-            var locations = await connection.QueryAsync<Location>(query, new { SearchString = searchString });
+
+            var query = "SELECT * FROM Locations";
+            var locations = await connection.QueryAsync<Location>(query);
 
 
             return mapper.Map<List<LocationCreateEventFormVm>>(locations);  

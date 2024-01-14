@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Botick.Shared.ViewModels.Event.Commands.CreateEvent
+﻿namespace Botick.Models.Commands.Events.CreateEvent
 {
     public class CreateEventArtistVm
     {

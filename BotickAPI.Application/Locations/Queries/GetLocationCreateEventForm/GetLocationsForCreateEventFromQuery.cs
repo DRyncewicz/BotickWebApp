@@ -9,6 +9,6 @@ namespace BotickAPI.Application.Locations.Queries.GetLocationsForCreateEventForm
 {
     public class GetLocationCreateEventFormQuery : IRequest<List<LocationCreateEventFormVm>>
     {
-        public string SearchString { get; set; }
+
     }
 }

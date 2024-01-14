@@ -18,14 +18,10 @@ namespace BotickAPI.Application.Artists.Queries.GetArtistsForCreateEventForm
         public async Task<List<ArtistCreateEventFormVm>> Handle(GetArtistCreateEventFormQuery request, CancellationToken cancellationToken)
         {
             await using SqlConnection connection = sqlConnectionFactory.CreateConnection();
-            var searchString = request.SearchString ?? string.Empty;
-            var query = @"
-                SELECT * FROM Artists 
-                WHERE (ArtName IS NOT NULL AND ArtName LIKE '%' + @SearchString + '%' ) 
-                OR (Name IS NOT NULL AND Name LIKE '%' + @SearchString + '%' ) 
-                OR (Surname IS NOT NULL AND Surname LIKE '%' + @SearchString + '%' )";
 
-            var artists = await connection.QueryAsync<Artist>(query, new { SearchString = searchString });
+            var query = @"SELECT * FROM Artists ";
+
+            var artists = await connection.QueryAsync<Artist>(query);
 
             return mapper.Map<List<ArtistCreateEventFormVm>>(artists);
         }
