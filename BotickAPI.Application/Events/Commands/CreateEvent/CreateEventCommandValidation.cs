@@ -24,9 +24,9 @@ namespace BotickAPI.Application.Events.Commands.CreateEvent
                 .WithMessage("The event should end after the start, this field is not required");
             RuleFor(p => p.Image).NotNull().NotEmpty()
                 .WithMessage("Image is required");
-            RuleFor(p => p.Artists).NotEmpty()
+            RuleFor(p => p.ArtistsId).NotEmpty()
                 .WithMessage("At least one artist should be chosen");
-            RuleFor(p => p.Locations).NotEmpty()
+            RuleFor(p => p.LocationsId).NotEmpty()
                 .WithMessage("At least one location should be chosen");
         }
     }

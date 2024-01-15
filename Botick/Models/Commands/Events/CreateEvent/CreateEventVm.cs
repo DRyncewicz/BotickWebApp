@@ -14,9 +14,9 @@
 
         public byte[] Image { get; set; }
 
-        public List<CreateEventLocationVm> Locations { get; set; } = new List<CreateEventLocationVm>();
+        public List<int> LocationsId { get; set; }
 
-        public List<CreateEventArtistVm> Artists { get; set; } = new List<CreateEventArtistVm>();
+        public List<int> ArtistsId { get; set; }
 
     }
 }

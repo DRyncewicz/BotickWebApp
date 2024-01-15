@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using Botick.Shared.ViewModels.Event.Commands.CreateEvent;
 using BotickAPI.Application.Common.Mappings;
 using BotickAPI.Domain.Entities;
 using MediatR;
@@ -25,20 +24,22 @@ namespace BotickAPI.Application.Events.Commands.CreateEvent
 
         public byte[] Image { get; set; }
 
-        public List<CreateEventLocationVm> Locations { get; set; } = new List<CreateEventLocationVm>();
+        public List<int> LocationsId { get; set; }
 
-        public List<CreateEventArtistVm> Artists { get; set; } = new List<CreateEventArtistVm>();
+        public List<int> ArtistsId { get; set; }
 
         public void Mapping(Profile profile)
         {
 
             profile.CreateMap<CreateEventCommand, Event>()
-                .ForMember(dest => dest.LocationEvents, opt => opt.MapFrom(src =>
-                    src.Locations.Select(loc => new LocationEvent { LocationId = loc.Id })))
-                .ForMember(dest => dest.Artists, opt => opt.MapFrom(src => src.Artists));
+                     .ForMember(dest => dest.ImagePath, opt => opt.Ignore()) 
+                     .ForMember(dest => dest.OrganizerEmail, opt => opt.Ignore()) 
+                     .ForMember(dest => dest.Status, opt => opt.Ignore())                                           
+                     .ForMember(dest => dest.LocationEvents, opt => opt.MapFrom(src =>
+                         src.LocationsId.Select(id => new LocationEvent { LocationId = id }).ToList()))
 
-            profile.CreateMap<CreateEventLocationVm, Location>();
-            profile.CreateMap<CreateEventArtistVm, Artist>();
+                     .ForMember(dest => dest.Artists, opt => opt.MapFrom(src =>
+                         src.ArtistsId.Select(id => new Artist { Id = id }).ToList()));
         }
     }
 }
