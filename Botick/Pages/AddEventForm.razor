@@ -2,30 +2,145 @@
 @using Botick.Models.Commands.Events.CreateEvent
 @using Botick.Models.Queries.Artists
 @using Botick.Models.Queries.Locations
-
+@using Newtonsoft.Json
 
 @inject IHttpClientFactory httpClientFactory
 
-<EditForm Model="@createEventVm">
-    <InputText @bind-Value="createEventVm.Name" />
-    <InputText @bind-Value="createEventVm.EventType" />
-    <InputTextArea @bind-Value="createEventVm.Description" />
-    <InputDate @bind-Value="createEventVm.StartTime" />
-    <InputDate @bind-Value="createEventVm.EndTime" />
+@if (locationCreateEventFormVms == null && artistCreateEventFormVms == null)
+{
+    <p><em>Charging...</em></p>
+}
+else
+{
+    <EditForm Model="@createEventVm" OnValidSubmit="@HandleSubmit">
+        <div class="form-group">
+            <label for="Name">Name</label>
+            <InputText id="Name" @bind-Value="createEventVm.Name" />
+        </div>
+        <div class="form-group">
+            <label for="EventType">Event type</label>
+            <InputText id="EventType" @bind-Value="createEventVm.EventType" />
+        </div>
+        <div class="form-group">
+            <label for="Description">Description</label>
+            <InputTextArea @bind-Value="createEventVm.Description" />
+        </div>
+        <div class="form-group">
+            <label for="StartTime">Start time</label>
+            <InputDate id="StartTime" @bind-Value="createEventVm.StartTime" />
+        </div>
+        <div class="form-group">
+            <label for="EndTime">End time</label>
+            <InputDate id="EndTime" @bind-Value="createEventVm.EndTime" />
+        </div>
+        <div class="form-group">
+            <label for="Image">Image</label>
+            <InputFile id="Image" OnChange="@HandleFileChange"></InputFile>
+        </div>
+        <div class="form-group">
+            <label for="Location">Location</label>
+            <select id="Location" multiple class="form-control" @onchange="HandleLocationChange">
+                @foreach (var location in locationCreateEventFormVms)
+                {
+                    <option value="@location.Id">@location.City @location.Venue</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="Artist">Artist</label>
+            <select id="Artist" multiple class="form-control" @onchange="HandleArtistChange">
+                @foreach (var artist in artistCreateEventFormVms)
+                {
+                    <option value="@artist.Id">@artist.Name @artist.ArtName @artist.Surname</option>
+                }
+            </select>
+        </div>
+        <button type="submit">Send</button>
+    </EditForm>
+}
 
-    <button type="submit">Send</button>
-</EditForm>
 
 @code {
     private HttpClient serverApiClient;
     private CreateEventVm createEventVm = new CreateEventVm();
-    private LocationCreateEventFormVm locationCreateEventFormVm = new LocationCreateEventFormVm();
-    private ArtistCreateEventFormVm artistCreateEventFormVm = new ArtistCreateEventFormVm();
+    private List<LocationCreateEventFormVm> locationCreateEventFormVms;
+    private List<ArtistCreateEventFormVm> artistCreateEventFormVms;
 
     protected override async Task OnInitializedAsync()
     {
         var serverApiClient = httpClientFactory.CreateClient("ServerAPI");
         var locationsResponse = await serverApiClient.GetAsync("/api/locations");
         var artistsResponse = await serverApiClient.GetAsync("/api/artists");
+
+        locationCreateEventFormVms = await LoadData<List<LocationCreateEventFormVm>>(locationsResponse);
+        artistCreateEventFormVms = await LoadData<List<ArtistCreateEventFormVm>>(artistsResponse);
+    }
+    private async Task HandleFileChange(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        if (file != null)
+        {
+            if (file.ContentType.ToLower() == "image/jpeg" || file.ContentType.ToLower() == "image/png")
+            {
+                using var stream = new MemoryStream();
+                await file.OpenReadStream().CopyToAsync(stream);
+                createEventVm.Image = stream.ToArray();
+            }
+            else
+            {
+
+            }
+        }
+    }
+
+    private async Task<T> LoadData<T>(HttpResponseMessage serverResponse)
+    {
+        if (serverResponse.IsSuccessStatusCode)
+        {
+            var jsonString = await serverResponse.Content.ReadAsStringAsync();
+
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(jsonString);
+            }
+            catch (JsonException e)
+            {
+                Console.WriteLine("Deserialization error: " + e.Message);
+                return default(T);
+            }
+        }
+        else
+        {
+            return default(T);
+        }
+    }
+
+    private async Task HandleSubmit()
+    {
+        var serverApiClient = httpClientFactory.CreateClient("ServerAPI");
+
+        var response = await serverApiClient.PostAsJsonAsync("api/events", createEventVm);
+
+        Console.WriteLine(response);
+    }
+
+    private void HandleLocationChange(ChangeEventArgs e)
+    {
+        var selectedValues = e.Value as string[];
+
+        if (selectedValues != null)
+        {
+            createEventVm.LocationsId = selectedValues.Select(int.Parse).ToList();
+        }
+    }
+
+    private void HandleArtistChange(ChangeEventArgs e)
+    {
+        var selectedValues = e.Value as string[];
+
+        if (selectedValues != null)
+        {
+            createEventVm.ArtistsId = selectedValues.Select(int.Parse).ToList();
+        }
     }
 }
