@@ -32,14 +32,9 @@ namespace BotickAPI.Application.Events.Commands.CreateEvent
         {
 
             profile.CreateMap<CreateEventCommand, Event>()
-                     .ForMember(dest => dest.ImagePath, opt => opt.Ignore()) 
-                     .ForMember(dest => dest.OrganizerEmail, opt => opt.Ignore()) 
-                     .ForMember(dest => dest.Status, opt => opt.Ignore())                                           
-                     .ForMember(dest => dest.LocationEvents, opt => opt.MapFrom(src =>
-                         src.LocationsId.Select(id => new LocationEvent { LocationId = id }).ToList()))
-
-                     .ForMember(dest => dest.Artists, opt => opt.MapFrom(src =>
-                         src.ArtistsId.Select(id => new Artist { Id = id }).ToList()));
+                     .ForMember(dest => dest.ImagePath, opt => opt.Ignore())
+                     .ForMember(dest => dest.OrganizerEmail, opt => opt.Ignore())
+                     .ForMember(dest => dest.Status, opt => opt.Ignore());                                           
         }
     }
 }
