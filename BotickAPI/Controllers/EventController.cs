@@ -13,7 +13,7 @@ namespace BotickAPI.Server.Controllers
     [Authorize]
     public class EventController : BaseController
     {
-        //[Authorize(Roles = "Organiser")]
+        [Authorize(Roles = "Organiser")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]

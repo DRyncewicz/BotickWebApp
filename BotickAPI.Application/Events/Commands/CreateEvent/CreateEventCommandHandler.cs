@@ -19,7 +19,7 @@ namespace BotickAPI.Application.Events.Commands.CreateEvent
         public async Task<int> Handle(CreateEventCommand request, CancellationToken cancellationToken)
         {
             var eventEntity = mapper.Map<Event>(request);
-            eventEntity.Status = "Inactive - Waiting for tickets";
+            eventEntity.Status = "Inactive";
             eventEntity.OrganizerEmail = currentUserService.Email;
 
             try

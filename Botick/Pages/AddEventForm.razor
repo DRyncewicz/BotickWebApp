@@ -2,9 +2,14 @@
 @using Botick.Models.Commands.Events.CreateEvent
 @using Botick.Models.Queries.Artists
 @using Botick.Models.Queries.Locations
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using Newtonsoft.Json
-
 @inject IHttpClientFactory httpClientFactory
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IAccessTokenProvider TokenProvider
+@attribute [Authorize(Policy = "IsOrganiser")]
 
 @if (locationCreateEventFormVms == null && artistCreateEventFormVms == null)
 {
@@ -74,6 +79,8 @@ else
 
         locationCreateEventFormVms = await LoadData<List<LocationCreateEventFormVm>>(locationsResponse);
         artistCreateEventFormVms = await LoadData<List<ArtistCreateEventFormVm>>(artistsResponse);
+
+
     }
     private async Task HandleFileChange(InputFileChangeEventArgs e)
     {
