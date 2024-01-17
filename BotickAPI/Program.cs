@@ -37,7 +37,7 @@ builder.Services.AddAuthentication("Bearer")
         options.Authority = "https://localhost:5001";
         options.TokenValidationParameters = new TokenValidationParameters()
         {
-            ValidateAudience = false
+            ValidateAudience = false,
         };
     });
 builder.Services.AddAuthorization(options =>

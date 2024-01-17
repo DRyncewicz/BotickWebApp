@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
 using Botick.Identities;
+using IdentityModel;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Components.Authorization;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -20,6 +23,11 @@ builder.Services.AddHttpClient("ServerAPI", client =>
 {
     client.BaseAddress = new Uri("https://localhost:7086");
 }).AddHttpMessageHandler<CustomAuthorizationHandler>();
+builder.Services.AddAuthorizationCore(cfg =>
+{
+    cfg.AddPolicy("IsOrganiser", policy => policy.RequireClaim(JwtClaimTypes.Role, "Organiser"));
+    cfg.AddPolicy("IsAdmin", policy => policy.RequireClaim(JwtClaimTypes.Role, "Admin"));
+});
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("identity"));
 builder.Services.AddOidcAuthentication(opt =>
 {
@@ -30,6 +38,8 @@ builder.Services.AddOidcAuthentication(opt =>
     opt.ProviderOptions.DefaultScopes.Add("openid");
     opt.ProviderOptions.DefaultScopes.Add("api1");
 });
+builder.Services.AddApiAuthorization().AddAccountClaimsPrincipalFactory<CustomUserFactory>();
+
 
 await builder.Build().RunAsync();
 
