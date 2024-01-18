@@ -22,4 +22,8 @@
     <ProjectReference Include="..\BotickAPI.Domain\BotickAPI.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Events\Commands\UpdateEvent\" />
+  </ItemGroup>
+
 </Project>

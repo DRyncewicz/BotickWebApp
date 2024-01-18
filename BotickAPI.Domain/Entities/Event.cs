@@ -31,6 +31,8 @@ namespace BotickAPI.Domain.Entities
 
         public ICollection<LocationEvent> LocationEvents { get; set; }
 
+        public ICollection<Location> Locations { get; set; }
+
         public ICollection<Artist> Artists { get; set; }
     }
 }
