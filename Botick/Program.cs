@@ -23,10 +23,10 @@ builder.Services.AddHttpClient("ServerAPI", client =>
 {
     client.BaseAddress = new Uri("https://localhost:7086");
 }).AddHttpMessageHandler<CustomAuthorizationHandler>();
-builder.Services.AddAuthorizationCore(cfg =>
+builder.Services.AddAuthorizationCore(opt =>
 {
-    cfg.AddPolicy("IsOrganiser", policy => policy.RequireClaim(JwtClaimTypes.Role, "Organiser"));
-    cfg.AddPolicy("IsAdmin", policy => policy.RequireClaim(JwtClaimTypes.Role, "Admin"));
+    opt.AddPolicy("IsOrganiser", policy => policy.RequireClaim(JwtClaimTypes.Role, "Organiser"));
+    opt.AddPolicy("IsAdmin", policy => policy.RequireClaim(JwtClaimTypes.Role, "Admin"));
 });
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("identity"));
 builder.Services.AddOidcAuthentication(opt =>

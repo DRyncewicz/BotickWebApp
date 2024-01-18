@@ -23,7 +23,7 @@ namespace BotickAPI.Application.Common.Behaviours
             catch (NotFoundException ex)
             {
                 var requestName = typeof(TRequest).Name;
-                logger.LogInformation(ex,
+                logger.LogError(ex,
                     "Botick Not Found Exception: record was not found for Request {Name} {@Request}", requestName,
                     request);
                 throw;
@@ -31,7 +31,7 @@ namespace BotickAPI.Application.Common.Behaviours
             catch (ValidationException ex)
             {
                 var requestName = typeof(TRequest).Name;
-                logger.LogInformation(ex,
+                logger.LogError(ex,
                     "Botick Validation Exception: bad value/s for Request {Name} {@Request}", requestName,
                     request);
                 throw;
@@ -39,7 +39,7 @@ namespace BotickAPI.Application.Common.Behaviours
             catch (BadRequestException ex)
             {
                 var requestName = typeof(TRequest).Name;
-                logger.LogInformation(ex,
+                logger.LogError(ex,
                     "Botick Bad Request Exception: bad  Request {Name} {@Request}", requestName,
                     request);
                 throw;
@@ -47,7 +47,7 @@ namespace BotickAPI.Application.Common.Behaviours
             catch (ConflictException ex)
             {
                 var requestName = typeof(TRequest).Name;
-                logger.LogInformation(ex,
+                logger.LogError(ex,
                     "Botick Conflict Exception: Conflict for request {Name} {@Request}", requestName,
                     request);
                 throw;
@@ -55,7 +55,7 @@ namespace BotickAPI.Application.Common.Behaviours
             catch (TimeoutException ex)
             {
                 var requestName = typeof(TRequest).Name;
-                logger.LogInformation(ex,
+                logger.LogError(ex,
                     "Botick Timeout Exception: Timeout for request {Name} {@Request}", requestName,
                     request);
                 throw;

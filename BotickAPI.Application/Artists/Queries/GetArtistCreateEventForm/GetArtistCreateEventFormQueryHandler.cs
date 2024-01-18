@@ -20,8 +20,8 @@ namespace BotickAPI.Application.Artists.Queries.GetArtistsForCreateEventForm
             await using SqlConnection connection = sqlConnectionFactory.CreateConnection();
 
             var query = @"SELECT * FROM Artists ";
-
             var artists = await connection.QueryAsync<Artist>(query);
+            connection.Dispose();
 
             return mapper.Map<List<ArtistCreateEventFormVm>>(artists);
         }
