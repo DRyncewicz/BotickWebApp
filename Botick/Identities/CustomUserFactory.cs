@@ -35,9 +35,9 @@ namespace Botick.Identities
             {
                 var key = prop.Key;
                 var value = prop.Value;
+
                 if (value != null && (value is JsonElement element && element.ValueKind == JsonValueKind.Array))
                 {
-                    // Remove the Roles claim with an array value and create a separate one for each role.
                     claimsIdentity.RemoveClaim(claimsIdentity.FindFirst(prop.Key));
                     var claims = element.EnumerateArray().Select(x => new Claim(prop.Key, x.ToString()));
                     claimsIdentity.AddClaims(claims);
