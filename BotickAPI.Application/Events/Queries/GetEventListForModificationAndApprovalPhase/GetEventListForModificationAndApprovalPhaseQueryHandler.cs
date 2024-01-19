@@ -2,6 +2,7 @@
 using BotickAPI.Application.Common.Exceptions;
 using BotickAPI.Application.Common.Interfaces;
 using BotickAPI.Application.Events.Queries.GetEventListForApprovalPhase;
+using BotickAPI.Application.Helpers;
 using BotickAPI.Domain.Entities;
 using Dapper;
 using MediatR;
@@ -24,7 +25,7 @@ namespace BotickAPI.Application.Events.Queries.GetEventListForModificationAndApp
             var userEmail = currentUserService.Email;
             if (userEmail == null)
             {
-                throw new BadRequestException("It is not possible to use this module without a confirmed email");
+                throw new AuthorizationException("It is not possible to use this module without a confirmed email");
             }
 
             await using SqlConnection connection = sqlConnectionFactory.CreateConnection();
@@ -36,37 +37,11 @@ namespace BotickAPI.Application.Events.Queries.GetEventListForModificationAndApp
                 LEFT JOIN Locations l ON le.LocationId = l.Id
                 LEFT JOIN ArtistEvent ae ON e.Id = ae.EventsId
                 LEFT JOIN Artists a ON ae.ArtistsId = a.Id
-                WHERE e.OrganizerEmail = @OrganizerEmail";
+                WHERE e.OrganizerEmail = @SearchValue";
 
             var eventDictionary = new Dictionary<int, Event>();
 
-            var eventList = (await connection.QueryAsync<Event, Location, Artist, Event>(
-                query,
-                (eventObj, location, artist) =>
-                {
-                    if (!eventDictionary.TryGetValue(eventObj.Id, out var eventEntry))
-                    {
-                        eventEntry = eventObj;
-                        eventEntry.Locations = new List<Location>();
-                        eventEntry.Artists = new List<Artist>();
-                        eventDictionary.Add(eventEntry.Id, eventEntry);
-                    }
-
-                    if (location != null && !eventEntry.Locations.Any(l => l.Id == location.Id))
-                    {
-                        eventEntry.Locations.Add(location);
-                    }
-
-                    if (artist != null && !eventEntry.Artists.Any(a => a.Id == artist.Id))
-                    {
-                        eventEntry.Artists.Add(artist);
-                    }
-
-                    return eventEntry;
-                },
-                new { OrganizerEmail = userEmail },
-                splitOn: "Id,Id"
-            )).Distinct().ToList();
+            var eventList = await MapDapperQueryForEventListToReceiveLocationAndArtistEntity.MapAllAsync(connection, query, userEmail);
 
             await connection.DisposeAsync();
 
