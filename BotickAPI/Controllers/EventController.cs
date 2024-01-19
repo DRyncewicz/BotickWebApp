@@ -1,4 +1,5 @@
 ﻿using BotickAPI.Application.Events.Commands.CreateEvent;
+using BotickAPI.Application.Events.Queries.GetEventListForBoard;
 using BotickAPI.Application.Events.Queries.GetEventListForModificationAndApprovalPhase;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -35,6 +36,22 @@ namespace BotickAPI.Server.Controllers
         public async Task<IActionResult> GetForModificationAndApprovalPhase(int pageSize, int currentPage)
         {
             var result = await Mediator.Send(new GetEventListForModificationAndApprovalPhaseQuery()
+            {
+                PageSize = pageSize,
+                CurrentPage = currentPage
+            });
+
+            return Ok(result);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetAllForBoardMainView(int pageSize, int currentPage)
+        {
+            var result = await Mediator.Send(new GetEventListBoardQuery()
             {
                 PageSize = pageSize,
                 CurrentPage = currentPage

@@ -3,21 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
+using BotickAPI.Application.Common.Mappings;
 using BotickAPI.Application.SharedDto;
+using BotickAPI.Domain.Entities;
 
 namespace BotickAPI.Application.Events.Queries.GetEventListForBoard
 {
-    public class EventForListVm
+    public class EventForListBoardVm : IMapFrom<Event>
     {
 
         public string Name { get; set; }
-
-        public List<LocationDto> Locations { get; set; } = new List<LocationDto>();
 
         public DateTime StartTime { get; set; }
 
         public string ImagePath { get; set; }
 
         public string EventType { get; set; }
+
+        public ICollection<ArtistDto> Artists { get; set; }
+
+        public ICollection<LocationDto> Locations { get; set; }
+
+        public void Mapping(Profile profile)
+        {
+            profile.CreateMap<Event, EventForListBoardVm>();
+        }
     }
 }
