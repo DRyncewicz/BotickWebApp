@@ -31,8 +31,6 @@ namespace BotickAPI.Application.Events.Queries.GetEventListForBoard
                 LEFT JOIN Artists a ON ae.ArtistsId = a.Id
                 WHERE e.Status = @SearchValue";
 
-            var eventDictionary = new Dictionary<int, Event>();
-
             var eventList = await MapDapperQueryForEventListToReceiveLocationAndArtistEntity.MapAllAsync(connection, query, "in progress");
 
             await connection.DisposeAsync();
