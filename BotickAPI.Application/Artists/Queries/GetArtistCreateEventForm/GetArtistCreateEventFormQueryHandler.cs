@@ -13,7 +13,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace BotickAPI.Application.Artists.Queries.GetArtistsForCreateEventForm
 {
-    internal class GetArtistCreateEventFormQueryHandler(ISqlConnectionFactory sqlConnectionFactory, IMapper mapper) : IRequestHandler<GetArtistCreateEventFormQuery, List<ArtistCreateEventFormVm>>
+    public class GetArtistCreateEventFormQueryHandler(ISqlConnectionFactory sqlConnectionFactory, IMapper mapper) : IRequestHandler<GetArtistCreateEventFormQuery, List<ArtistCreateEventFormVm>>
     {
         public async Task<List<ArtistCreateEventFormVm>> Handle(GetArtistCreateEventFormQuery request, CancellationToken cancellationToken)
         {
