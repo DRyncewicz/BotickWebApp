@@ -27,7 +27,7 @@ namespace BotickAPI.Persistence.Repositories
 
                 if (item != null)
                 {
-                    throw new NotFoundException();
+                    throw new NotFoundException("Item selected to be deleted has been not found in database");
                 }
 
                 dbContext.Set<T>().Remove(item);
