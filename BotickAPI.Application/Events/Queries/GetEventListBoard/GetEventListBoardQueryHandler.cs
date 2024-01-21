@@ -16,11 +16,13 @@ using System.Threading.Tasks;
 
 namespace BotickAPI.Application.Events.Queries.GetEventListForBoard
 {
-    public class GetEventListBoardQueryHandler(ISqlConnectionFactory sqlConnectionFactory, IMapper mapper, ILogger<GetEventListBoardQueryHandler> log) : IRequestHandler<GetEventListBoardQuery, ListEventForListBoardVm>
+    public class GetEventListBoardQueryHandler(IDbQueryService dbQueryService,
+        IMapper mapper,
+        ILogger<GetEventListBoardQueryHandler> log,
+        MappingMultiEntityQueryHelper mappingMultiEntityQueryHelper) : IRequestHandler<GetEventListBoardQuery, ListEventForListBoardVm>
     {
         public async Task<ListEventForListBoardVm> Handle(GetEventListBoardQuery request, CancellationToken cancellationToken)
         {
-            await using SqlConnection connection = sqlConnectionFactory.CreateConnection();
 
             var query = @"
                 SELECT e.*, l.*, a.*
@@ -31,9 +33,8 @@ namespace BotickAPI.Application.Events.Queries.GetEventListForBoard
                 LEFT JOIN Artists a ON ae.ArtistsId = a.Id
                 WHERE e.Status = @SearchValue";
 
-            var eventList = await MapDapperQueryForEventListToReceiveLocationAndArtistEntity.MapAllAsync(connection, query, "in progress");
+            var eventList = await mappingMultiEntityQueryHelper.MapEventListToReceiveLocationAndArtistAsync(dbQueryService, query, "in progress");
 
-            await connection.DisposeAsync();
 
             var eventForListBoardVms = mapper.Map<List<EventForListBoardVm>>(eventList);
 

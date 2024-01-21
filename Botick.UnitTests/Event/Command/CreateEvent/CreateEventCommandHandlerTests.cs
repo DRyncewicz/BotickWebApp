@@ -1,4 +1,5 @@
 ﻿using Application.UnitTests.Common;
+using Application.UnitTests.Mapping;
 using AutoMapper;
 using BotickAPI.Application.Common.Interfaces;
 using BotickAPI.Application.Events.Commands.CreateEvent;
@@ -6,6 +7,7 @@ using Castle.Core.Logging;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Identity.Client;
 using Moq;
 using Shouldly;
 using System;
@@ -17,32 +19,33 @@ using System.Threading.Tasks;
 
 namespace Application.UnitTests.Event.Command.CreateEvent
 {
-    public class CreateEventCommandHandlerTests : CommandTestBase
+    public class CreateEventCommandHandlerTests : IClassFixture<MappingTestFixture>
     {
         private readonly CreateEventCommandHandler _handler;
 
-        private readonly Mock<IMapper> _mapper;
+        private readonly TestRepository<BotickAPI.Domain.Entities.Event> _repo = new TestRepository<BotickAPI.Domain.Entities.Event>();
+
+        private readonly IConfigurationProvider _configuration;
+
+        private readonly IMapper _mapp;
 
         private readonly Mock<IFileSaver> _fileSaver;
 
         private readonly Mock<ICurrentUserService> _currentUserService;
 
-        private readonly Mock<ISqlConnectionFactory> _connectionFactory;
+        private readonly Mock<IDbQueryService> _dbQueryService;
 
         private readonly Mock<ILogger<CreateEventCommandHandler>> _logger;
 
-        private readonly Mock<IBaseCommandRepository<BotickAPI.Domain.Entities.Event>> _repo;
-
-
-        public CreateEventCommandHandlerTests() : base()
+        public CreateEventCommandHandlerTests(MappingTestFixture fixture) : base()
         {
-            _mapper = new Mock<IMapper>();
+            _configuration = fixture.ConfigurationProvider;
+            _mapp = fixture.Mapper;
             _fileSaver = new Mock<IFileSaver>();
             _currentUserService = new Mock<ICurrentUserService>();
-            _connectionFactory = new Mock<ISqlConnectionFactory>();
-            _repo = new Mock<IBaseCommandRepository<BotickAPI.Domain.Entities.Event>>();
+            _dbQueryService = new Mock<IDbQueryService>();
             _logger = new Mock<ILogger<CreateEventCommandHandler>>();
-            _handler = new CreateEventCommandHandler(_repo.Object, _mapper.Object, _fileSaver.Object, _currentUserService.Object, _connectionFactory.Object, _logger.Object);
+            _handler = new CreateEventCommandHandler(_repo, _mapp, _fileSaver.Object, _currentUserService.Object, _dbQueryService.Object, _logger.Object);
         }
 
         [Fact]
@@ -51,19 +54,15 @@ namespace Application.UnitTests.Event.Command.CreateEvent
             //Arrange
             _fileSaver.Setup(fs => fs.SaveImageFile(It.IsAny<byte[]>(), It.IsAny<string>()))
                 .Returns("fake/path/to/image.jpg");
-            _mapper.Setup(mapper => mapper.Map<BotickAPI.Domain.Entities.Event>(It.IsAny<CreateEventCommand>()))
-                .Returns(new BotickAPI.Domain.Entities.Event());
-            _repo.Setup(repo => repo.AddAsync(It.IsAny<BotickAPI.Domain.Entities.Event>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult(1));
-            var mockDbConnection = new Mock<IDbConnection>();
-            _connectionFactory.Setup(factory => factory.CreateConnection()).Returns(mockDbConnection.Object);
+            _currentUserService.Setup(v => v.Email).Returns("user@user.pl");
+
             byte[] image = new byte[] { 137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13 };
 
             var command = new CreateEventCommand()
             {
                 ArtistsId = [1],
                 LocationsId = [1],
-                Description = "description",
+                Description = "Test description with 100 chars Test description with 100 chars Test description with 100 chars Test description with 100 chars Test description with 100 chars",
                 StartTime = DateTime.Now.AddDays(14),
                 EndTime = DateTime.Now.AddDays(15),
                 Image = image,
@@ -73,11 +72,16 @@ namespace Application.UnitTests.Event.Command.CreateEvent
 
             //Act
             var result = await _handler.Handle(command, CancellationToken.None);
-
-            var dir = await _context.EventReviews.FirstAsync(x => x.Id == result, CancellationToken.None);
+            var resultCheck = await _repo._cont.Events.FirstAsync(x => x.Id == result, CancellationToken.None);
 
             //Assert
-            dir.ShouldNotBeNull();
+            result.ShouldBe<int>(2);
+            resultCheck.ShouldNotBeNull();
+        }
+
+        public void Dispose()
+        {
+            _repo.Dispose();
         }
     }
 }

@@ -13,15 +13,13 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace BotickAPI.Application.Artists.Queries.GetArtistsForCreateEventForm
 {
-    public class GetArtistCreateEventFormQueryHandler(ISqlConnectionFactory sqlConnectionFactory, IMapper mapper) : IRequestHandler<GetArtistCreateEventFormQuery, List<ArtistCreateEventFormVm>>
+    public class GetArtistCreateEventFormQueryHandler(IDbQueryService dbQueryService, IMapper mapper) : IRequestHandler<GetArtistCreateEventFormQuery, List<ArtistCreateEventFormVm>>
     {
         public async Task<List<ArtistCreateEventFormVm>> Handle(GetArtistCreateEventFormQuery request, CancellationToken cancellationToken)
         {
-            await using SqlConnection connection = sqlConnectionFactory.CreateConnection();
 
             var query = @"SELECT * FROM Artists ";
-            var artists = await connection.QueryAsync<Artist>(query);
-            connection.Dispose();
+            var artists = await dbQueryService.GetAll<Artist>(query, null);
 
             return mapper.Map<List<ArtistCreateEventFormVm>>(artists);
         }

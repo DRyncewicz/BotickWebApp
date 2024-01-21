@@ -18,7 +18,7 @@ namespace BotickAPI.Application.Events.Commands.CreateEvent
         IMapper mapper,
         IFileSaver fileSaver,
         ICurrentUserService currentUserService,
-        ISqlConnectionFactory sqlConnectionFactory,
+        IDbQueryService dbQueryService,
         ILogger<CreateEventCommandHandler> log) : IRequestHandler<CreateEventCommand, int>
     {
         public async Task<int> Handle(CreateEventCommand request, CancellationToken cancellationToken)
@@ -46,21 +46,17 @@ namespace BotickAPI.Application.Events.Commands.CreateEvent
 
         private async Task CreateRelationRecordsForNewEvent(int eventId, List<int> artistIds, List<int> locationIds)
         {
-            await using SqlConnection connection = sqlConnectionFactory.CreateConnection();
-
-
             foreach (var artistId in artistIds)
             {
                 var artistEventQuery = "INSERT INTO ArtistEvent (ArtistsId, EventsId) VALUES (@ArtistId, @EventId)";
-                await connection.ExecuteAsync(artistEventQuery, new { ArtistId = artistId, EventId = eventId });
+                await dbQueryService.Execute(artistEventQuery, new { ArtistId = artistId, EventId = eventId });
             }
 
             foreach (var locationId in locationIds)
             {
                 var locationEventQuery = "INSERT INTO LocationEvent (LocationId, EventId) VALUES (@LocationId, @EventId)";
-                await connection.ExecuteAsync(locationEventQuery, new { LocationId = locationId, EventId = eventId });
+                await dbQueryService.Execute(locationEventQuery, new { LocationId = locationId, EventId = eventId });
             }
-            await connection.DisposeAsync();
         }
     }
 }
