@@ -16,9 +16,10 @@ using System.Threading.Tasks;
 
 namespace BotickAPI.Application.Events.Queries.GetEventListForModificationAndApprovalPhase
 {
-    public class GetEventListForModificationAndApprovalPhaseQueryHandler(ISqlConnectionFactory sqlConnectionFactory,
+    public class GetEventListForModificationAndApprovalPhaseQueryHandler(IDbQueryService dbQueryService,
         IMapper mapper, ICurrentUserService currentUserService,
-        ILogger<GetEventListForModificationAndApprovalPhaseQueryHandler> log) : IRequestHandler<GetEventListForModificationAndApprovalPhaseQuery, ListEventForListModificationAndApprovalPhase>
+        ILogger<GetEventListForModificationAndApprovalPhaseQueryHandler> log,
+        MappingMultiEntityQueryHelper mappingMultiEntityQueryHelper) : IRequestHandler<GetEventListForModificationAndApprovalPhaseQuery, ListEventForListModificationAndApprovalPhase>
     {
         public async Task<ListEventForListModificationAndApprovalPhase> Handle(GetEventListForModificationAndApprovalPhaseQuery request, CancellationToken cancellationToken)
         {
@@ -27,8 +28,6 @@ namespace BotickAPI.Application.Events.Queries.GetEventListForModificationAndApp
             {
                 throw new AuthorizationException("It is not possible to use this module without a confirmed email");
             }
-
-            await using SqlConnection connection = sqlConnectionFactory.CreateConnection();
 
             var query = @"
                 SELECT e.*, l.*, a.*
@@ -39,9 +38,7 @@ namespace BotickAPI.Application.Events.Queries.GetEventListForModificationAndApp
                 LEFT JOIN Artists a ON ae.ArtistsId = a.Id
                 WHERE e.OrganizerEmail = @SearchValue";
 
-            var eventList = await MapDapperQueryForEventListToReceiveLocationAndArtistEntity.MapAllAsync(connection, query, userEmail);
-
-            await connection.DisposeAsync();
+            var eventList = await mappingMultiEntityQueryHelper.MapEventListToReceiveLocationAndArtistAsync(dbQueryService, query, userEmail);
 
             if (eventList.Any())
             {

@@ -56,7 +56,7 @@ namespace Application.UnitTests.Event.Command.CreateEvent
             _repo.Setup(repo => repo.AddAsync(It.IsAny<BotickAPI.Domain.Entities.Event>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(1));
             var mockDbConnection = new Mock<IDbConnection>();
-            _connectionFactory.Setup(factory => factory.CreateConnection()).Returns(mockDbConnection.Object);
+            //_connectionFactory.Setup(factory => factory.CreateConnection()).Returns(mockDbConnection.Object);
             byte[] image = new byte[] { 137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13 };
 
             var command = new CreateEventCommand()

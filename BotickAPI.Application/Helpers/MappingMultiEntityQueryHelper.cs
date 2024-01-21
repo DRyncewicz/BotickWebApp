@@ -8,16 +8,17 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Microsoft.Data.SqlClient;
 using Dapper;
+using BotickAPI.Application.Common.Interfaces;
 
 namespace BotickAPI.Application.Helpers
 {
-    public static class MapDapperQueryForEventListToReceiveLocationAndArtistEntity
+    public class MappingMultiEntityQueryHelper
     {
-        public static async Task<List<Event>> MapAllAsync(SqlConnection connection, string query, string searchValue)
+        public async Task<List<Event>> MapEventListToReceiveLocationAndArtistAsync(IDbQueryService dbQueryService, string query, string searchValue)
         {
             var eventDictionary = new Dictionary<int, Event>();
 
-            var eventList = (await connection.QueryAsync<Event, Location, Artist, Event>(
+            var eventList = (await dbQueryService.GetAll<Event, Location, Artist, Event>(
                 query,
                 (eventObj, location, artist) =>
                 {

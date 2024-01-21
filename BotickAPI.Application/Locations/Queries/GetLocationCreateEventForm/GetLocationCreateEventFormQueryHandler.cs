@@ -13,14 +13,12 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace BotickAPI.Application.Locations.Queries.GetLocationsForCreateEventForm
 {
-    internal class GetLocationCreateEventFormQueryHandler(ISqlConnectionFactory sqlConnectionFactory, IMapper mapper) : IRequestHandler<GetLocationCreateEventFormQuery, List<LocationCreateEventFormVm>>
+    internal class GetLocationCreateEventFormQueryHandler(IDbQueryService dbQueryService, IMapper mapper) : IRequestHandler<GetLocationCreateEventFormQuery, List<LocationCreateEventFormVm>>
     {
         public async Task<List<LocationCreateEventFormVm>> Handle(GetLocationCreateEventFormQuery request, CancellationToken cancellationToken)
         {
-            await using SqlConnection connection = sqlConnectionFactory.CreateConnection();
-
             var query = "SELECT * FROM Locations";
-            var locations = await connection.QueryAsync<Location>(query);
+            var locations = await dbQueryService.GetAll<Location>(query, null);
 
 
             return mapper.Map<List<LocationCreateEventFormVm>>(locations);  

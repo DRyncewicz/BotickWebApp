@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using FluentValidation;
+using BotickAPI.Application.Helpers;
 
 namespace BotickAPI.Application
 {
@@ -25,6 +26,7 @@ namespace BotickAPI.Application
                 services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
                 services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
                 services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ExceptionHandlerBehaviour<,>));
+                services.AddTransient<MappingMultiEntityQueryHelper>();
 
                 return services;
             }

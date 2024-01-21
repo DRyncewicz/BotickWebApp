@@ -25,6 +25,8 @@ namespace BotickAPI.Persistence
             services.AddScoped<IDbConnection>(db => new SqlConnection(configuration.GetConnectionString("DefaultConnectionString")));
             services.AddScoped(typeof(IBaseCommandRepository<>), typeof(BaseCommandRepository<>));
             services.AddScoped<ISqlConnectionFactory, SqlConnectionFactory>();
+            services.AddScoped<IDbQueryService, DbQueryService>();
+
             return services;
         }
     }
