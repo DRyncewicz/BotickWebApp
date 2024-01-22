@@ -23,7 +23,7 @@ namespace BotickAPI.Application.Events.Queries.GetEventListForModificationAndApp
 
             var eventList = await dbContext.Events
                 .Include(p => p.Artists)
-                .Include(p => p.LocationEvents).ThenInclude(le => le.Location)
+                .Include(p => p.Location)
                 .Where(p => p.OrganizerEmail == userEmail)
                 .ToListAsync();
 

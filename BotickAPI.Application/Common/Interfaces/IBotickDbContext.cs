@@ -24,8 +24,6 @@ namespace BotickAPI.Application.Common.Interfaces
 
         DbSet<Location> Locations { get; set; }
 
-        DbSet<LocationEvent> LocationEvent { get; set; }
-
         DbSet<T> Set<T>() where T : class;
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);

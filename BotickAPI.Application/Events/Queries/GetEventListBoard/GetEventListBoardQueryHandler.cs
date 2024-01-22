@@ -16,7 +16,7 @@ namespace BotickAPI.Application.Events.Queries.GetEventListForBoard
         {
             var eventsForListBoard = await dbContext.Events
                 .Include(p => p.Artists)
-                .Include(p => p.LocationEvents).ThenInclude(le => le.Location)
+                .Include(p => p.Location)
                 .Where(p => p.Status == "in progress")
                 .ToListAsync();
 

@@ -23,12 +23,11 @@ namespace BotickAPI.Application.Events.Queries.GetEventListForBoard
 
         public ICollection<ArtistDto> Artists { get; set; }
 
-        public ICollection<LocationDto> Locations { get; set; }
+        public LocationDto Location { get; set; }
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Event, EventForListBoardVm>()
-                .ForMember(p => p.Locations, map => map.MapFrom(src => src.LocationEvents.Select(x => x.Location)));
+            profile.CreateMap<Event, EventForListBoardVm>();
         }
     }
 }

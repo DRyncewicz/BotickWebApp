@@ -29,20 +29,10 @@ namespace BotickAPI.Application.Events.Commands.CreateEvent
             {
                 throw new NullReferenceException("Event file was recognized as null file type object");
             }
+
             newEvent.Artists = await GetCollectionsFromIdListAsync<Artist>(request.ArtistsId);
             await dbContext.Events.AddAsync(newEvent);
-            var locationEvents = new List<LocationEvent>();
 
-            foreach (var locationId in request.LocationsId)
-            {
-                locationEvents.Add(new LocationEvent
-                {
-                    LocationId = locationId,
-                    Event = newEvent
-                });
-            }
-
-            newEvent.LocationEvents = locationEvents;
             await dbContext.SaveChangesAsync(cancellationToken);
             log.LogInformation($"New event from user:{currentUserService.Email} was succesfully created");
 
@@ -50,7 +40,7 @@ namespace BotickAPI.Application.Events.Commands.CreateEvent
         }
 
 
-        private async Task<List<T>> GetCollectionsFromIdListAsync<T>(List<int> ids) where T : AuditableEntity
+        private async Task<List<T>> GetCollectionsFromIdListAsync<T>(List<int> ids) where T : Artist
         {
             var entityListObject = await dbContext.Set<T>().Where(e => ids.Contains(e.Id)).ToListAsync();
             return entityListObject;
