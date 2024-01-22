@@ -23,7 +23,7 @@ namespace BotickAPI.Application.Events.Queries.GetEventListForBoard
 
         public ICollection<ArtistDto> Artists { get; set; }
 
-        public ICollection<LocationDto> Locations { get; set; }
+        public LocationDto Location { get; set; }
 
         public void Mapping(Profile profile)
         {

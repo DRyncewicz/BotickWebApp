@@ -25,13 +25,13 @@ namespace BotickAPI.Domain.Entities
 
         public string Status { get; set; }
 
+        public int LocationId { get; set; }
+
+        public Location Location { get; set; }
+
         public ICollection<EventReview> Reviews { get; set; }
 
         public ICollection<Ticket> Ticket { get; set; }
-
-        public ICollection<LocationEvent> LocationEvents { get; set; }
-
-        public ICollection<Location> Locations { get; set; }
 
         public ICollection<Artist> Artists { get; set; }
     }

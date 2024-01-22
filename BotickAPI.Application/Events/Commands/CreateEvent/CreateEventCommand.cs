@@ -24,7 +24,7 @@ namespace BotickAPI.Application.Events.Commands.CreateEvent
 
         public byte[] Image { get; set; }
 
-        public List<int> LocationsId { get; set; }
+        public int LocationId { get; set; }
 
         public List<int> ArtistsId { get; set; }
 
@@ -37,8 +37,6 @@ namespace BotickAPI.Application.Events.Commands.CreateEvent
                      .ForMember(dest => dest.Status, opt => opt.Ignore())
                      .ForMember(dest => dest.Reviews, opt => opt.Ignore())
                      .ForMember(dest => dest.Ticket, opt => opt.Ignore())
-                     .ForMember(dest => dest.LocationEvents, opt => opt.Ignore())
-                     .ForMember(dest => dest.Locations, opt => opt.Ignore())
                      .ForMember(dest => dest.Artists, opt => opt.Ignore())
                      .ForMember(dest => dest.Id, opt => opt.Ignore())
                      .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())

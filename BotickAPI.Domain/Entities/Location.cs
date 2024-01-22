@@ -15,6 +15,6 @@ namespace BotickAPI.Domain.Entities
 
         public int Capacity { get; set; }
 
-        public ICollection<LocationEvent> LocationEvents { get; set; }
+        public ICollection<Event> Events { get; set; }
     }
 }

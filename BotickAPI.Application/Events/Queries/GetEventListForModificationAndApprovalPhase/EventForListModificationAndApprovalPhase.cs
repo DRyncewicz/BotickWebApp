@@ -26,7 +26,7 @@ namespace BotickAPI.Application.Events.Queries.GetEventListForApprovalPhase
 
         public string Status { get; set; }
 
-        public ICollection<LocationDto> Locations { get; set; }
+        public LocationDto Location { get; set; }
 
         public ICollection<ArtistDto> Artists { get; set; }
 
