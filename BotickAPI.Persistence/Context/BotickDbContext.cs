@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BotickAPI.Persistence.Context
 {
-    public class BotickDbContext : DbContext
+    public class BotickDbContext : DbContext, IBotickDbContext
     {
         private readonly IDateTime _dateTime;
 
@@ -48,17 +48,17 @@ namespace BotickAPI.Persistence.Context
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
             modelBuilder.Entity<LocationEvent>()
-                .HasKey(sc => new { sc.EventId, sc.LocationId });
+                  .HasKey(le => new { le.EventId, le.LocationId });
 
             modelBuilder.Entity<LocationEvent>()
-                .HasOne(sc => sc.Location)
-                .WithMany(s => s.LocationEvents)
-                .HasForeignKey(sc => sc.LocationId);
+                .HasOne(le => le.Event)
+                .WithMany(e => e.LocationEvents)
+                .HasForeignKey(le => le.EventId); 
 
             modelBuilder.Entity<LocationEvent>()
-                .HasOne(sc => sc.Event)
-                .WithMany(c => c.LocationEvents)
-                .HasForeignKey(sc => sc.EventId);
+                .HasOne(le => le.Location)
+                .WithMany(l => l.LocationEvents)
+                .HasForeignKey(le => le.LocationId); 
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())

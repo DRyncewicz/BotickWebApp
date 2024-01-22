@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BotickAPI.Infrastructure", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D412D015-CA39-436B-904D-F84E40BD19E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.UnitTests", "Botick.UnitTests\Application.UnitTests.csproj", "{2C655BAC-D7E7-4BF6-BDB4-7AD8B4830844}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.UnitTests", "Botick.UnitTests\Application.UnitTests.csproj", "{2C655BAC-D7E7-4BF6-BDB4-7AD8B4830844}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -31,4 +31,9 @@
     <ProjectReference Include="..\BotickAPI.Persistence\BotickAPI.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Event\Command\CreateEvent\" />
+    <Folder Include="Helpers\" />
+  </ItemGroup>
+
 </Project>

@@ -33,7 +33,8 @@ namespace BotickAPI.Application.Events.Queries.GetEventListForApprovalPhase
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Event, EventForListModificationAndApprovalPhase>()
-                .ForMember(dest => dest.Image, opt => opt.Ignore());
+                .ForMember(dest => dest.Image, opt => opt.Ignore())
+                .ForMember(dest => dest.Locations, map => map.MapFrom(src => src.LocationEvents.Select(x => x.Location)));
         }
     }
 }

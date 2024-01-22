@@ -27,7 +27,8 @@ namespace BotickAPI.Application.Events.Queries.GetEventListForBoard
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Event, EventForListBoardVm>();
+            profile.CreateMap<Event, EventForListBoardVm>()
+                .ForMember(p => p.Locations, map => map.MapFrom(src => src.LocationEvents.Select(x => x.Location)));
         }
     }
 }
