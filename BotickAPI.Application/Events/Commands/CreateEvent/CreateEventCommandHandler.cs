@@ -2,9 +2,11 @@
 using BotickAPI.Application.Common.Interfaces;
 using BotickAPI.Domain.Common;
 using BotickAPI.Domain.Entities;
+using BotickAPI.Infrastructure.FileServices;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace BotickAPI.Application.Events.Commands.CreateEvent
 {
@@ -12,7 +14,8 @@ namespace BotickAPI.Application.Events.Commands.CreateEvent
         IFileSaver fileSaver,
         ICurrentUserService currentUserService,
         ILogger<CreateEventCommandHandler> log,
-        IBotickDbContext dbContext) : IRequestHandler<CreateEventCommand, int>
+        IBotickDbContext dbContext,
+        IOptions<FileSaveConfig> config) : IRequestHandler<CreateEventCommand, int>
     {
         public async Task<int> Handle(CreateEventCommand request, CancellationToken cancellationToken)
         {
@@ -22,8 +25,8 @@ namespace BotickAPI.Application.Events.Commands.CreateEvent
 
             try
             {
-                newEvent.ImagePath = fileSaver.SaveImageFile(request.Image,
-                    request.Name);
+                newEvent.ImagePath = fileSaver.SaveFile(request.Image,
+                    request.Name, new string[] { "jpeg", "png" }, config.Value.ImageFolderPath);
             }
             catch
             {

@@ -8,6 +8,6 @@ namespace BotickAPI.Application.Common.Interfaces
 {
     public interface IFileSaver
     {
-        string SaveImageFile(byte[] fileData, string name);
+        string SaveFile(byte[] fileData, string name, string[] acceptableExtensions, string folderPath);
     }
 }

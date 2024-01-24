@@ -44,7 +44,7 @@ else
         </div>
         <div class="form-group">
             <label for="Location">Location</label>
-            <select id="Location" multiple class="form-control" @onchange="HandleLocationChange">
+            <select id="Location" class="form-control" @onchange="HandleLocationChange">
                 @foreach (var location in locationCreateEventFormVms)
                 {
                     <option value="@location.Id">@location.City @location.Venue</option>
@@ -133,11 +133,11 @@ else
 
     private void HandleLocationChange(ChangeEventArgs e)
     {
-        var selectedValues = e.Value as string[];
+        var selectedValues = e.Value as string;
 
         if (selectedValues != null)
         {
-            createEventVm.LocationsId = selectedValues.Select(int.Parse).ToList();
+            createEventVm.LocationId = int.Parse(selectedValues);
         }
     }
 

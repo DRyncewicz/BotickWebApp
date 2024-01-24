@@ -14,9 +14,8 @@
 
         public byte[] Image { get; set; }
 
-        public List<int> LocationsId { get; set; }
+        public int LocationId { get; set; }
 
         public List<int> ArtistsId { get; set; }
-
     }
 }
