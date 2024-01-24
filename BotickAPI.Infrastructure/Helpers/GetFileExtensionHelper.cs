@@ -30,6 +30,16 @@ namespace BotickAPI.Infrastructure.Helpers
                 return ".gif";
             }
 
+            if (fileData[0] == 0x25 && fileData[1] == 0x50 && fileData[2] == 0x44 && fileData[3] == 0x46)
+            {
+                return ".pdf";
+            }
+
+            if (fileData[0] == 0x42 && fileData[1] == 0x4D)
+            {
+                return ".bmp";
+            }
+
             return null;
         }
 

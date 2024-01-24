@@ -1,17 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BotickAPI.Application.Common.Interfaces;
+﻿using BotickAPI.Application.Common.Interfaces;
 using BotickAPI.Persistence.Context;
-using BotickAPI.Persistence.Repositories;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System.Data;
-using Dapper;
 
 namespace BotickAPI.Persistence
 {

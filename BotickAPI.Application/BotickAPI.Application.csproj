@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <Folder Include="Events\Commands\UpdateEvent\" />
-    <Folder Include="Helpers\" />
   </ItemGroup>
 
 </Project>

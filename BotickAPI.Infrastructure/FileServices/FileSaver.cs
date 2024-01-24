@@ -9,32 +9,28 @@ using Microsoft.Extensions.Options;
 
 namespace BotickAPI.Infrastructure.FileServices
 {
-    public class FileSaver: IFileSaver
+    public class FileSaver : IFileSaver
     {
-        private readonly string _folderPath;
         private readonly IDateTime _dateTime;
 
-        public FileSaver(IOptions<FileSaveConfig> config, IDateTime dateTime)
+        public FileSaver(IDateTime dateTime)
         {
             _dateTime = dateTime;
-            _folderPath = config.Value.FolderPath;
-
-            if (!Directory.Exists(_folderPath))
-            {
-                Directory.CreateDirectory(_folderPath);
-            }
         }
 
-        public string SaveImageFile(byte[] fileData, string name)
+        public string SaveFile(byte[] fileData, string name, string[] acceptableExtensions, string folderPath)
         {
             string fileExtension = GetFileExtensionHelper.GetFileExtension(fileData);
-            if (fileExtension != ".jpg" && fileExtension != ".png")
+            if (acceptableExtensions.Contains(fileExtension))
             {
                 throw new ArgumentException("Unauthorized file extension.");
             }
-
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
             string fileName = $"{_dateTime.Now:yyyyMMddHHmmss}_{name}{fileExtension}";
-            string filePath = Path.Combine(_folderPath, fileName);
+            string filePath = Path.Combine(folderPath, fileName);
             File.WriteAllBytes(filePath, fileData);
 
             return filePath;

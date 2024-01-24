@@ -3,6 +3,7 @@ using BotickAPI.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using BotickAPI.Infrastructure.FileServices;
+using BotickAPI.Infrastructure.FileServices.Tickets;
 
 namespace BotickAPI.Infrastructure
 {
@@ -15,9 +16,10 @@ namespace BotickAPI.Infrastructure
             {
                 fileSaveConfigSection.Bind(options);
             });
-
             services.AddTransient<IDateTime, DateTimeService>();
             services.AddTransient<IFileSaver, FileSaver>();
+            services.AddTransient<IPDFTicketGenerator, PDFTicketGenerator>();
+
             return services;
         }
     }
