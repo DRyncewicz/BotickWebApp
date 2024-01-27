@@ -29,6 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D412D015
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.UnitTests", "Botick.UnitTests\Application.UnitTests.csproj", "{2C655BAC-D7E7-4BF6-BDB4-7AD8B4830844}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi.IntegrationTests", "WebApi.IntegrationTests\WebApi.IntegrationTests.csproj", "{64662A43-CFE8-407F-AFBD-58602043C017}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{2C655BAC-D7E7-4BF6-BDB4-7AD8B4830844}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C655BAC-D7E7-4BF6-BDB4-7AD8B4830844}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C655BAC-D7E7-4BF6-BDB4-7AD8B4830844}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64662A43-CFE8-407F-AFBD-58602043C017}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64662A43-CFE8-407F-AFBD-58602043C017}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64662A43-CFE8-407F-AFBD-58602043C017}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64662A43-CFE8-407F-AFBD-58602043C017}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,6 +85,7 @@ Global
 		{0B9BEEF5-5B90-42D0-8CB6-86A7FD908E6E} = {7BCEFB91-4307-4F9B-B444-84FF0A31F46C}
 		{D412D015-CA39-436B-904D-F84E40BD19E1} = {AB8907CF-763C-4095-96AD-F9E94D13A806}
 		{2C655BAC-D7E7-4BF6-BDB4-7AD8B4830844} = {D412D015-CA39-436B-904D-F84E40BD19E1}
+		{64662A43-CFE8-407F-AFBD-58602043C017} = {D412D015-CA39-436B-904D-F84E40BD19E1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2D0D2C5A-2A92-4D43-B6F5-3A351ECD3C03}
