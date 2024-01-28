@@ -1,5 +1,6 @@
 ﻿using BotickAPI.Application.Common.Interfaces;
 using BotickAPI.Persistence.Context;
+using IdentityModel.Client;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -12,12 +13,13 @@ namespace WebApi.IntegrationTests.Common
         {
             try
             {
+
                 builder.ConfigureServices(services =>
                 {
                     var serviceProvider = new ServiceCollection()
                     .AddEntityFrameworkInMemoryDatabase()
                     .BuildServiceProvider();
-
+                    
                     services.AddDbContext<BotickDbContext>(options =>
                     {
                         options.UseInMemoryDatabase("InMemoryDatabase");
@@ -43,13 +45,50 @@ namespace WebApi.IntegrationTests.Common
                         logger.LogError(ex, "An error occurred seeding the" +
                             $"databgase with test messages. Error: {ex.Message}");
                     }
-                });
+                })
+                    .UseEnvironment("Test");
             }
             catch (Exception ex)
             {
 
             }
             base.ConfigureWebHost(builder);
+        }
+
+        public async Task<HttpClient> GetAuthenticatedClientAsync()
+        {
+            var client = CreateClient();
+
+            var token = await GetAccessTokenAsync(client, "alice", "Pass123$");
+            client.SetBearerToken(token);
+            return client;
+        }
+
+        private async Task<string> GetAccessTokenAsync(HttpClient client, string userName, string userPassword)
+        {
+            var disco = await client.GetDiscoveryDocumentAsync();
+
+            if (disco.IsError)
+            {
+                throw new Exception(disco.Error);
+            }
+
+            var response = await client.RequestPasswordTokenAsync(new PasswordTokenRequest
+            {
+                Address = disco.TokenEndpoint,
+                ClientId = "client",
+                ClientSecret = "secret",
+                Scope = "api1",
+                UserName = userName,
+                Password = userPassword
+            });
+
+            if (response.IsError)
+            {
+                throw new Exception(response.Error);
+            }
+
+            return response.AccessToken;
         }
     }
 }

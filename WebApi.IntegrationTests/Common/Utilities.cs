@@ -1,5 +1,6 @@
 ﻿using BotickAPI.Domain.Entities;
 using BotickAPI.Persistence.Context;
+using Newtonsoft.Json;
 
 namespace WebApi.IntegrationTests.Common
 {
@@ -29,6 +30,15 @@ namespace WebApi.IntegrationTests.Common
             context.EventReviews.Add(eventReview);
 
             context.SaveChanges();
+        }
+
+        public static async Task<T> GetResponseContent<T>(HttpResponseMessage response)
+        {
+            var stringResponse = await response.Content.ReadAsStringAsync();
+
+            var result = JsonConvert.DeserializeObject<T>(stringResponse);
+
+            return result;
         }
     }
 }

@@ -40,6 +40,7 @@ namespace BotickAPI.Application.Events.Commands.CreateEvent
                      .ForMember(dest => dest.Artists, opt => opt.Ignore())
                      .ForMember(dest => dest.Id, opt => opt.Ignore())
                      .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
+                     .ForMember(dest => dest.Location, opt => opt.Ignore())
                      .ForMember(dest => dest.Created, opt => opt.Ignore())
                      .ForMember(dest => dest.ModifiedBy, opt => opt.Ignore())
                      .ForMember(dest => dest.Modified, opt => opt.Ignore())
