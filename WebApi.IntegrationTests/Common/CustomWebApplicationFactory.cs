@@ -1,9 +1,12 @@
 ﻿using BotickAPI.Application.Common.Interfaces;
+using BotickAPI.Infrastructure.Identity;
 using BotickAPI.Persistence.Context;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using WebApi.IntegrationTests.Common.DummyServices;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace WebApi.IntegrationTests.Common
 {
@@ -11,29 +14,35 @@ namespace WebApi.IntegrationTests.Common
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
+            base.ConfigureWebHost(builder);
             try
             {
-
-                builder.ConfigureServices(services =>
+                builder
+                .ConfigureServices(services =>
                 {
-                    var serviceProvider = new ServiceCollection()
-                    .AddEntityFrameworkInMemoryDatabase()
-                    .BuildServiceProvider();
-                    
+                    var descriptor = services.SingleOrDefault(
+                        d => d.ServiceType ==
+                        typeof(DbContextOptions<BotickDbContext>));
+
+                    if (descriptor != null)
+                    {
+                        services.Remove(descriptor);
+                    }
+
                     services.AddDbContext<BotickDbContext>(options =>
                     {
-                        options.UseInMemoryDatabase("InMemoryDatabase");
-                        options.UseInternalServiceProvider(serviceProvider);
+                        options.UseInMemoryDatabase("InMemoryDbForTesting");
                     });
-                    services.AddScoped<IBotickDbContext>(provider => provider.GetService<BotickDbContext>());
+
+                    services.AddScoped<ICurrentUserService, DummyCurrentUserService>();
 
                     var sp = services.BuildServiceProvider();
 
                     using var scope = sp.CreateScope();
-                    var scopedService = scope.ServiceProvider;
-                    var context = scopedService.GetRequiredService<BotickDbContext>();
-                    var logger = scopedService.GetRequiredService<ILogger<CustomWebApplicationFactory<TStartup>>>();
-
+                    var scopedServices = scope.ServiceProvider;
+                    var context = scopedServices.GetRequiredService<BotickDbContext>();
+                    var logger = scopedServices.GetRequiredService<ILogger<CustomWebApplicationFactory<TStartup>>>();
+                    context.Database.EnsureDeleted();
                     context.Database.EnsureCreated();
 
                     try
@@ -42,8 +51,8 @@ namespace WebApi.IntegrationTests.Common
                     }
                     catch (Exception ex)
                     {
-                        logger.LogError(ex, "An error occurred seeding the" +
-                            $"databgase with test messages. Error: {ex.Message}");
+                        logger.LogError(ex, "An error occurred seeding the " +
+                                            $"database with test messages. Error: {ex.Message}");
                     }
                 })
                     .UseEnvironment("Test");
@@ -52,7 +61,6 @@ namespace WebApi.IntegrationTests.Common
             {
 
             }
-            base.ConfigureWebHost(builder);
         }
 
         public async Task<HttpClient> GetAuthenticatedClientAsync()
@@ -81,7 +89,7 @@ namespace WebApi.IntegrationTests.Common
                 Scope = "api1",
                 UserName = userName,
                 Password = userPassword
-            });
+            }) ;
 
             if (response.IsError)
             {

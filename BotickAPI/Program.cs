@@ -16,9 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Org.BouncyCastle.Asn1.X509;
 using Serilog;
-using System.Globalization;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,7 +28,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddScoped(typeof(ICurrentUserService), typeof(CurrentUserService));
+builder.Services.TryAddScoped(typeof(ICurrentUserService), typeof(CurrentUserService));
 builder.Services.AddCors(options =>
     options.AddPolicy(name: "MyAllowSpecificOrigins",
         builder =>
@@ -41,7 +39,8 @@ builder.Services.AddCors(options =>
         }));
 if (builder.Environment.IsEnvironment("Test"))
 {
-    builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("InMemoryDatabase"));
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                       options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));
     builder.Services.AddDefaultIdentity<ApplicationUser>().AddEntityFrameworkStores<ApplicationDbContext>();
     builder.Services.AddIdentityServer()
         .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>
@@ -66,7 +65,8 @@ if (builder.Environment.IsEnvironment("Test"))
                 Claims = new List<Claim>
                 {
                     new Claim(JwtClaimTypes.Email, "alice@user.com"),
-                    new Claim(ClaimTypes.Name, "alice")
+                    new Claim(ClaimTypes.Name, "alice"),
+                    new Claim(ClaimTypes.Role, "Organiser")
                 }
         }});
     builder.Services.AddAuthentication("Bearer")
