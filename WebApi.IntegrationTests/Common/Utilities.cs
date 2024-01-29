@@ -6,6 +6,7 @@ namespace WebApi.IntegrationTests.Common
 {
     public class Utilities
     {
+
         public static void InitializeDbForTests(BotickDbContext context)
         {
             var artist = new Artist() { CreatedBy = "admin@admin.pl", Created = DateTime.Now, StatusId = 1, Id = 1, Name = "TestName", Surname = "TestSurname", Age = 22, ArtName = "TestArtName", BirthCity = "CityTest", Discipline = "TestDis", Description = "TestDesc", Likes = 150 };
@@ -14,8 +15,8 @@ namespace WebApi.IntegrationTests.Common
             var location = new Location() { CreatedBy = "admin@admin.pl", Created = DateTime.Now, StatusId = 1, Id = 1, City = "TestCity", Venue = "TestVenue", Capacity = 5000 };
             context.Locations.Add(location);
 
-            var eventObj = new BotickAPI.Domain.Entities.Event() { CreatedBy = "admin@admin.pl", Created = DateTime.Now, StatusId = 1, Id = 1, OrganizerEmail = "user@user.pl", Name = "TestEvent", EventType = "TestType", ImagePath = "TestDirectory", Description = "TestDesc", StartTime = DateTime.Now.AddDays(15), EndTime = DateTime.Now.AddDays(16), Status = "in progress" };
-            context.Events.Add(eventObj);
+            var @event = new BotickAPI.Domain.Entities.Event() { CreatedBy = "admin@admin.pl", Created = DateTime.Now, StatusId = 1, Id = 1, OrganizerEmail = "user@user.pl", Name = "TestEvent", EventType = "TestType", ImagePath = "TestDirectory", Description = "TestDesc", StartTime = DateTime.Now.AddDays(15), EndTime = DateTime.Now.AddDays(16), Status = "in progress" };
+            context.Events.Add(@event);
 
             var booking = new Booking() { CreatedBy = "admin@admin.pl", Created = DateTime.Now, StatusId = 1, Id = 1, UserEmail = "user@user.pl", EventId = 1, TotalPrice = 250, BookingTime = DateTime.Now, Status = "Paid" };
             context.Bookings.Add(booking);

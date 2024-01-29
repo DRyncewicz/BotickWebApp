@@ -1,8 +1,11 @@
 ﻿
+using BotickAPI.Application.Events.Queries.GetEventListBoard;
 using BotickAPI.Application.Events.Queries.GetEventListForBoard;
+using BotickAPI.Application.Events.Queries.GetEventListForModificationAndApprovalPhase;
 using Shouldly;
 using WebApi.IntegrationTests.Common;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace WebApi.IntegrationTests.Controllers.Event
 {
@@ -10,9 +13,12 @@ namespace WebApi.IntegrationTests.Controllers.Event
     {
         private readonly CustomWebApplicationFactory<Program> _factory;
 
-        public GetForBoard_Tests(CustomWebApplicationFactory<Program> factory)
+        private readonly ITestOutputHelper _output;
+
+        public GetForBoard_Tests(CustomWebApplicationFactory<Program> factory, ITestOutputHelper output)
         {
             _factory = factory;
+            _output = output;
         }
 
         [Fact]
@@ -22,11 +28,15 @@ namespace WebApi.IntegrationTests.Controllers.Event
 
             int pageSize = 15;
             int pageNumber = 1;
-            var response = await client.GetAsync($"/api/events?pageSize={pageSize}&pageNo={pageNumber}");
+            var response = await client.GetAsync($"/api/events?pageSize={pageSize}&currentPage={pageNumber}");
             response.EnsureSuccessStatusCode();
 
-            var vm = await Utilities.GetResponseContent<EventForListBoardVm>(response);
+            var vm = await Utilities.GetResponseContent<ListEventForListBoardVm>(response);
             vm.ShouldNotBeNull();
+            _output.WriteLine("Values:");
+            _output.WriteLine($"{response.Headers}");
+            _output.WriteLine($"{await response.Content.ReadAsStringAsync()}");
+
         }
     }
 }

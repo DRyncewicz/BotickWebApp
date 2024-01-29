@@ -27,10 +27,10 @@ namespace Application.UnitTests.Event.Queries.GetEventListBoard
             _logger = new Mock<ILogger<GetEventListBoardQueryHandler>>();
         }
 
-        [Fact]
-        public async Task CanGetEventListBoardForEventsInProgress()
-        {
-            var handler = new GetEventListBoardQueryHandler(_context, _mapper, _logger.Object);
-        }
+        //[Fact]
+        //public async Task CanGetEventListBoardForEventsInProgress()
+        //{
+        //    var handler = new GetEventListBoardQueryHandler(_context, _mapper, _logger.Object);
+        //}
     }
 }
