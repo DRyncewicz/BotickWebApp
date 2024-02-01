@@ -36,7 +36,7 @@ namespace WebApi.IntegrationTests.Controllers.Event
             _output.WriteLine("Values:");
             _output.WriteLine($"{response.Headers}");
             _output.WriteLine($"{await response.Content.ReadAsStringAsync()}");
-
+            //Just test for git flow
         }
     }
 }
